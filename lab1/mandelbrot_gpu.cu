@@ -5,14 +5,14 @@
 
 #include <cstdint>
 #include <cuda_runtime.h>
-a
-    /// <--- your code here --->
 
-    __global__ void mandelbrot_gpu_scalar(
-        uint32_t img_size,
-        uint32_t max_iters,
-        uint32_t *out /* pointer to GPU memory */
-    )
+/// <--- your code here --->
+
+__global__ void mandelbrot_gpu_scalar(
+    uint32_t img_size,
+    uint32_t max_iters,
+    uint32_t *out /* pointer to GPU memory */
+)
 {
     for (uint64_t i = 0; i < img_size; ++i) // test
     {
@@ -50,7 +50,7 @@ void launch_mandelbrot_gpu_scalar(
     uint32_t *out /* pointer to GPU memory */
 )
 {
-    /* your (CPU) code here... */
+    mandelbrot_gpu_scalar<<<1, 1>>>(img_size, max_iters, out); // launches basickernel w/ 1block, 1thread
 }
 
 __global__ void mandelbrot_gpu_vector(
@@ -68,7 +68,7 @@ void launch_mandelbrot_gpu_vector(
     uint32_t *out /* pointer to GPU memory */
 )
 {
-    /* your (CPU) code here... */
+    mandelbrot_gpu_vector<<<1, 32>>>(img_size, max_iters, out); // launches vector kernel w/ 1block, 32threads
 }
 
 /// <--- /your code here --->
