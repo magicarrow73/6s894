@@ -54,7 +54,8 @@ uint32_t ceil_div(uint32_t a, uint32_t b) { return (a + b - 1) / b; }
     // (If you do this, you'll need to update your code to use the new constants
     // 'window_zoom', 'window_x', and 'window_y'.)
 
-    #define HAS_VECTOR_IMPL // <~~ keep this line if you want to benchmark the vector kernel!
+    #define HAS_VECTOR_IMPL // <~~ keep this line if you want to benchmark the vector
+   kernel!
 
     ////////////////////////////////////////////////////////////////////////////////
     // Vector

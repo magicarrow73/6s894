@@ -1,6 +1,0 @@
-Testing with image size 256x256 and 1000 max iterations.
-Running mandelbrot_cpu_scalar ...
-  Runtime: 40.903 ms
-Running mandelbrot_cpu_vector ...
-  Runtime: 1e-05 ms
-  Correctness: average output difference from reference = 0.248337
