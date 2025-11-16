@@ -59,7 +59,36 @@ __global__ void mandelbrot_gpu_vector(
     uint32_t *out /* pointer to GPU memory */
 )
 {
-    /* your (GPU) code here... */
+    // basically there are 32 threads working together to compute one 32-pixel block of the image
+    // for thread x with threadIdx.x = x, it should compute pixels (i,j) for j % 32 == x
+    for (uint64_t i = 0; i < img_size; ++i) // test
+    {
+        for (uint64_t j = threadIdx.x; j < img_size; j += 32)
+        {
+            // Get the plane coordinate X for the image pixel.
+            float cx = (float(j) / float(img_size)) * 2.5f - 2.0f;
+            float cy = (float(i) / float(img_size)) * 2.5f - 1.25f;
+
+            // Innermost loop: start the recursion from z = 0.
+            float x2 = 0.0f;
+            float y2 = 0.0f;
+            float w = 0.0f;
+            uint32_t iters = 0;
+            while (x2 + y2 <= 4.0f && iters < max_iters)
+            {
+                float x = x2 - y2 + cx;
+                float y = w - x2 - y2 + cy;
+                x2 = x * x;
+                y2 = y * y;
+                float z = x + y;
+                w = z * z;
+                ++iters;
+            }
+
+            // Write result.
+            out[i * img_size + j] = iters;
+        }
+    }
 }
 
 void launch_mandelbrot_gpu_vector(

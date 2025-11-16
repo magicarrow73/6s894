@@ -1,3 +1,10 @@
+// Pretend we have AVX-512 so VSCode will not complain
+#define __AVX512F__ 1
+#define __AVX512DQ__ 1
+#define __AVX512VL__ 1
+#define __AVX512BW__ 1
+#define __AVX512CD__ 1
+
 // Optional arguments:
 //  -r <img_size>
 //  -b <max iterations>
@@ -46,10 +53,77 @@ void mandelbrot_cpu_scalar(uint32_t img_size, uint32_t max_iters, uint32_t *out)
 
 void mandelbrot_cpu_vector(uint32_t img_size, uint32_t max_iters, uint32_t *out)
 {
-    // TODO: Implement this function.
-}
+    // constants vectorized
+    __m512 img_size_vec = _mm512_set1_ps(float(img_size));
+    __m512 two_point_five = _mm512_set1_ps(2.5f);
+    __m512 two = _mm512_set1_ps(2.0f);
+    __m512 one_point_two_five = _mm512_set1_ps(1.25f);
+    __m512 four = _mm512_set1_ps(4.0f);
+    __m512i one_epi = _mm512_set1_epi32(1);
+    __m512i max_iters_epi = _mm512_set1_epi32(int32_t(max_iters));
+    for (uint64_t i = 0; i < img_size; ++i)
+    {
+        for (uint64_t j = 0; j < img_size; j += 16)
+        {
+            // set float(j) vector
+            __m512 j_vec = _mm512_set_ps(
+                float(j + 15),
+                float(j + 14),
+                float(j + 13),
+                float(j + 12),
+                float(j + 11),
+                float(j + 10),
+                float(j + 9),
+                float(j + 8),
+                float(j + 7),
+                float(j + 6),
+                float(j + 5),
+                float(j + 4),
+                float(j + 3),
+                float(j + 2),
+                float(j + 1),
+                float(j + 0));
 
-/// <--- /your code here --->
+            // set float(i) vector
+            __m512 i_vec = _mm512_set1_ps(float(i));
+
+            // get coordinates cx, cy
+            __m512 cx = _mm512_sub_ps(_mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five), two);
+            __m512 cy = _mm512_sub_ps(_mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five), one_point_two_five);
+
+            // init x2,y2,w vectors
+            __m512 x2 = _mm512_set1_ps(0.0f);
+            __m512 y2 = _mm512_set1_ps(0.0f);
+            __m512 w = _mm512_set1_ps(0.0f);
+            __m512i iters = _mm512_set1_epi32(0);
+            // mask
+            __mmask16 mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
+
+            while (mask != 0)
+            {
+                // compute x,y vectors
+
+                __m512 x = _mm512_sub_ps(_mm512_add_ps(x2, cx), y2);
+                __m512 y = _mm512_sub_ps(_mm512_add_ps(w, cy), _mm512_add_ps(x2, y2));
+
+                // compute x2, y2, w; these should not be updated if we have already escaped
+                x2 = _mm512_mask_mul_ps(x2, mask, x, x);
+                y2 = _mm512_mask_mul_ps(y2, mask, y, y);
+                __m512 z = _mm512_add_ps(x, y);
+                w = _mm512_mask_mul_ps(w, mask, z, z);
+
+                // update mask
+                mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
+                __mmask16 iters_mask = _mm512_cmp_epi32_mask(iters, max_iters_epi, _MM_CMPINT_LT);
+                mask = _mm512_kand(mask, iters_mask);
+                // update iters
+                iters = _mm512_mask_add_epi32(iters, mask, iters, one_epi);
+            }
+            // store result
+            _mm512_storeu_si512((void *)(out + i * img_size + j), iters);
+        }
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///          YOU DO NOT NEED TO MODIFY THE CODE BELOW HERE.                  ///

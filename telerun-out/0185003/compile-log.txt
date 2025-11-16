@@ -1,0 +1,9 @@
+/tmp/tmp1hvw5cjl/source.cpp:117:40: error: argument value 17 is outside the valid range [0, 7] [-Wargument-outside-range]
+  117 |                 __mmask16 iters_mask = _mm512_cmp_epi32_mask(iters, max_iters_epi, _CMP_LT_OQ);
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/lib/llvm-20/lib/clang/20/include/avx512fintrin.h:5001:15: note: expanded from macro '_mm512_cmp_epi32_mask'
+ 5001 |   ((__mmask16)__builtin_ia32_cmpd512_mask((__v16si)(__m512i)(a), \
+      |               ^
+ 5002 |                                           (__v16si)(__m512i)(b), (int)(p), \
+      |                                                                  ~~~~~~~~
+1 error generated.
