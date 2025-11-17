@@ -17,6 +17,10 @@ constexpr float window_zoom = 1.0 / 10000.0f;
 constexpr float window_x = -0.743643887 - 0.5 * window_zoom;
 constexpr float window_y = 0.131825904 - 0.5 * window_zoom;
 constexpr uint32_t default_max_iters = 2000;
+// use this number of parallel executions given by ILP at any given time.
+// assume that img_size is a multiple of (16 * ILP_SCALING).
+// otherwise we will need boundary checks.
+constexpr uint32_t ILP_SCALING = 4;
 
 uint32_t ceil_div(uint32_t a, uint32_t b) { return (a + b - 1) / b; }
 
@@ -29,7 +33,8 @@ uint32_t ceil_div(uint32_t a, uint32_t b) { return (a + b - 1) / b; }
     // (If you do this, you'll need to update your code to use the new constants
     // 'window_zoom', 'window_x', and 'window_y'.)
 
-    #define HAS_VECTOR_IMPL // <~~ keep this line if you want to benchmark the vector kernel!
+    #define HAS_VECTOR_IMPL // <~~ keep this line if you want to benchmark the vector
+   kernel!
 
     ////////////////////////////////////////////////////////////////////////////////
     // Vector
@@ -59,7 +64,60 @@ __global__ void mandelbrot_gpu_vector_ilp(
     uint32_t max_iters,
     uint32_t *out /* pointer to GPU memory */
 ) {
-    /* your (GPU) code here... */
+    // basically there are 32 threads working together to compute one 32-pixel block of
+    // the image for thread x with threadIdx.x = x, it should compute pixels (i,j) for j %
+    // 32 == x
+
+    for (uint64_t i = 0; i < img_size; ++i) {
+        for (uint64_t j = threadIdx.x; j < img_size; j += 32 * ILP_SCALING) {
+
+            float cx[ILP_SCALING];
+            float cy[ILP_SCALING];
+            float x2[ILP_SCALING];
+            float y2[ILP_SCALING];
+            float w[ILP_SCALING];
+            bool active[ILP_SCALING];
+            uint32_t iters_arr[ILP_SCALING];
+#pragma unroll
+            for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                cx[ilp] =
+                    (float(j + ilp * 32) / float(img_size)) * window_zoom + window_x;
+                cy[ilp] = (float(i) / float(img_size)) * window_zoom + window_y;
+
+                x2[ilp] = 0.0f;
+                y2[ilp] = 0.0f;
+                w[ilp] = 0.0f;
+                active[ilp] = true;
+                iters_arr[ilp] = 0;
+            }
+            bool any_active = true;
+            while (any_active) {
+                any_active = false;
+#pragma unroll
+                for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                    if (active[ilp]) {
+                        if (x2[ilp] + y2[ilp] <= 4.0f && iters_arr[ilp] < max_iters) {
+                            float x = x2[ilp] - y2[ilp] + cx[ilp];
+                            float y = w[ilp] - (x2[ilp] + y2[ilp]) + cy[ilp];
+                            x2[ilp] = x * x;
+                            y2[ilp] = y * y;
+                            float z = x + y;
+                            w[ilp] = z * z;
+                            ++iters_arr[ilp];
+                            any_active = true;
+                        } else {
+                            active[ilp] = false;
+                        }
+                    }
+                }
+            }
+
+            // Write result.
+            for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                out[i * img_size + ilp * 32 + j] = iters_arr[ilp];
+            }
+        }
+    }
 }
 
 void launch_mandelbrot_gpu_vector_ilp(
@@ -67,7 +125,7 @@ void launch_mandelbrot_gpu_vector_ilp(
     uint32_t max_iters,
     uint32_t *out /* pointer to GPU memory */
 ) {
-    /* your (CPU) code here... */
+    mandelbrot_gpu_vector_ilp<<<1, 32>>>(img_size, max_iters, out);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -478,7 +536,6 @@ int main(int argc, char *argv[]) {
                   << difference(img_size, max_iters, result_host, ref_result)
                   << std::endl;
     }
-
 
     if (impl == VECTOR_MULTICORE || impl == ALL) {
         CUDA_CHECK(cudaMemset(result_device, 0, img_size * img_size * sizeof(uint32_t)));

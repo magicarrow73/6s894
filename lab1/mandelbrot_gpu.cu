@@ -59,7 +59,7 @@ __global__ void mandelbrot_gpu_vector(
 {
     // basically there are 32 threads working together to compute one 32-pixel block of the image
     // for thread x with threadIdx.x = x, it should compute pixels (i,j) for j % 32 == x
-    for (uint64_t i = 0; i < img_size; ++i) // test
+    for (uint64_t i = 0; i < img_size; ++i)
     {
         for (uint64_t j = threadIdx.x; j < img_size; j += 32)
         {

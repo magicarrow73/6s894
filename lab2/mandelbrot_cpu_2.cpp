@@ -14,6 +14,8 @@ constexpr float window_x = -0.743643887 - 0.5 * window_zoom;
 constexpr float window_y = 0.131825904 - 0.5 * window_zoom;
 constexpr uint32_t default_max_iters = 2000;
 // use this number of parallel executions given by ILP at any given time.
+// assume that img_size is a multiple of (16 * ILP_SCALING).
+// otherwise we will need boundary checks.
 constexpr uint32_t ILP_SCALING = 4;
 
 // CPU Scalar Mandelbrot set generation.

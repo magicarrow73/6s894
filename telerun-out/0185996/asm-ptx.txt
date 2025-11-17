@@ -1,0 +1,301 @@
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin ptx code:
+================
+arch = sm_89
+code version = [8,7]
+host = linux
+compile_size = 64bit
+compressed
+ptxasOptions = 
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry _Z25mandelbrot_gpu_vector_ilpjjPj(
+.param .u32 _Z25mandelbrot_gpu_vector_ilpjjPj_param_0,
+.param .u32 _Z25mandelbrot_gpu_vector_ilpjjPj_param_1,
+.param .u64 _Z25mandelbrot_gpu_vector_ilpjjPj_param_2
+)
+{
+.reg .pred %p<22>;
+.reg .b16 %rs<47>;
+.reg .f32 %f<117>;
+.reg .b32 %r<44>;
+.reg .b64 %rd<11>;
+
+
+ld.param.u32 %r19, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_0];
+ld.param.u32 %r20, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_1];
+ld.param.u64 %rd2, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_2];
+setp.eq.s32 %p1, %r19, 0;
+@%p1 bra $L__BB0_20;
+
+cvta.to.global.u64 %rd1, %rd2;
+mov.u32 %r22, %tid.x;
+shl.b32 %r1, %r22, 2;
+cvt.rn.f32.u32 %f1, %r19;
+mov.u32 %r34, 0;
+
+$L__BB0_2:
+setp.ge.u32 %p2, %r1, %r19;
+@%p2 bra $L__BB0_19;
+
+mul.lo.s32 %r3, %r34, %r19;
+cvt.rn.f32.u32 %f43, %r34;
+div.approx.ftz.f32 %f44, %f43, %f1;
+fma.rn.ftz.f32 %f2, %f44, 0f38D1B717, 0f3E06F043;
+mov.u32 %r35, %r1;
+
+$L__BB0_4:
+cvt.rn.f32.u32 %f57, %r35;
+div.approx.ftz.f32 %f58, %f57, %f1;
+fma.rn.ftz.f32 %f3, %f58, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r27, %r35, 1;
+cvt.rn.f32.u32 %f59, %r27;
+div.approx.ftz.f32 %f60, %f59, %f1;
+fma.rn.ftz.f32 %f4, %f60, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r28, %r35, 2;
+cvt.rn.f32.u32 %f61, %r28;
+div.approx.ftz.f32 %f62, %f61, %f1;
+fma.rn.ftz.f32 %f5, %f62, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r29, %r35, 3;
+cvt.rn.f32.u32 %f63, %r29;
+div.approx.ftz.f32 %f64, %f63, %f1;
+fma.rn.ftz.f32 %f6, %f64, 0f38D1B717, 0fBF3E62B9;
+mov.f32 %f93, 0f00000000;
+mov.u32 %r36, 0;
+mov.u16 %rs35, 1;
+mov.u16 %rs43, %rs35;
+mov.u16 %rs37, %rs35;
+mov.u16 %rs39, %rs35;
+mov.u32 %r37, %r36;
+mov.u32 %r38, %r36;
+mov.u32 %r40, %r36;
+mov.f32 %f94, %f93;
+mov.f32 %f95, %f93;
+mov.f32 %f96, %f93;
+mov.f32 %f107, %f93;
+mov.f32 %f106, %f93;
+mov.f32 %f105, %f93;
+mov.f32 %f100, %f93;
+mov.f32 %f101, %f93;
+mov.f32 %f102, %f93;
+mov.f32 %f103, %f93;
+mov.f32 %f104, %f93;
+
+$L__BB0_5:
+mov.u16 %rs4, %rs39;
+mov.u16 %rs3, %rs37;
+mov.u16 %rs2, %rs43;
+mov.u16 %rs1, %rs35;
+and.b16 %rs19, %rs4, 255;
+setp.eq.s16 %p3, %rs19, 0;
+mov.u16 %rs37, 0;
+mov.u16 %rs39, %rs37;
+mov.u16 %rs42, %rs37;
+@%p3 bra $L__BB0_8;
+
+add.ftz.f32 %f65, %f106, %f107;
+setp.gtu.ftz.f32 %p4, %f65, 0f40800000;
+setp.ge.u32 %p5, %r40, %r20;
+or.pred %p6, %p4, %p5;
+@%p6 bra $L__BB0_8;
+
+sub.ftz.f32 %f66, %f107, %f106;
+add.ftz.f32 %f67, %f3, %f66;
+sub.ftz.f32 %f68, %f105, %f107;
+sub.ftz.f32 %f69, %f68, %f106;
+add.ftz.f32 %f70, %f2, %f69;
+mul.ftz.f32 %f107, %f67, %f67;
+mul.ftz.f32 %f106, %f70, %f70;
+add.ftz.f32 %f71, %f67, %f70;
+mul.ftz.f32 %f105, %f71, %f71;
+add.s32 %r40, %r40, 1;
+mov.u16 %rs42, 1;
+mov.u16 %rs39, %rs4;
+
+$L__BB0_8:
+and.b16 %rs24, %rs3, 255;
+setp.eq.s16 %p7, %rs24, 0;
+@%p7 bra $L__BB0_11;
+
+add.ftz.f32 %f72, %f101, %f100;
+setp.gtu.ftz.f32 %p8, %f72, 0f40800000;
+setp.ge.u32 %p9, %r38, %r20;
+or.pred %p10, %p8, %p9;
+@%p10 bra $L__BB0_11;
+
+sub.ftz.f32 %f73, %f100, %f101;
+add.ftz.f32 %f74, %f4, %f73;
+sub.ftz.f32 %f75, %f102, %f100;
+sub.ftz.f32 %f76, %f75, %f101;
+add.ftz.f32 %f77, %f2, %f76;
+mul.ftz.f32 %f100, %f74, %f74;
+mul.ftz.f32 %f101, %f77, %f77;
+add.ftz.f32 %f78, %f74, %f77;
+mul.ftz.f32 %f102, %f78, %f78;
+add.s32 %r38, %r38, 1;
+mov.u16 %rs42, 1;
+mov.u16 %rs37, %rs3;
+
+$L__BB0_11:
+and.b16 %rs28, %rs2, 255;
+setp.eq.s16 %p11, %rs28, 0;
+mov.u16 %rs35, 0;
+mov.u16 %rs43, %rs35;
+@%p11 bra $L__BB0_14;
+
+add.ftz.f32 %f79, %f104, %f103;
+setp.gtu.ftz.f32 %p12, %f79, 0f40800000;
+setp.ge.u32 %p13, %r37, %r20;
+or.pred %p14, %p12, %p13;
+@%p14 bra $L__BB0_14;
+
+sub.ftz.f32 %f80, %f103, %f104;
+add.ftz.f32 %f81, %f5, %f80;
+sub.ftz.f32 %f82, %f96, %f103;
+sub.ftz.f32 %f83, %f82, %f104;
+add.ftz.f32 %f84, %f2, %f83;
+mul.ftz.f32 %f103, %f81, %f81;
+mul.ftz.f32 %f104, %f84, %f84;
+add.ftz.f32 %f85, %f81, %f84;
+mul.ftz.f32 %f96, %f85, %f85;
+add.s32 %r37, %r37, 1;
+mov.u16 %rs42, 1;
+mov.u16 %rs43, %rs2;
+
+$L__BB0_14:
+and.b16 %rs32, %rs1, 255;
+setp.eq.s16 %p15, %rs32, 0;
+@%p15 bra $L__BB0_17;
+
+add.ftz.f32 %f86, %f95, %f94;
+setp.gtu.ftz.f32 %p16, %f86, 0f40800000;
+setp.ge.u32 %p17, %r36, %r20;
+or.pred %p18, %p16, %p17;
+@%p18 bra $L__BB0_17;
+
+sub.ftz.f32 %f87, %f95, %f94;
+add.ftz.f32 %f88, %f6, %f87;
+sub.ftz.f32 %f89, %f93, %f95;
+sub.ftz.f32 %f90, %f89, %f94;
+add.ftz.f32 %f91, %f2, %f90;
+mul.ftz.f32 %f95, %f88, %f88;
+mul.ftz.f32 %f94, %f91, %f91;
+add.ftz.f32 %f92, %f88, %f91;
+mul.ftz.f32 %f93, %f92, %f92;
+add.s32 %r36, %r36, 1;
+mov.u16 %rs42, 1;
+mov.u16 %rs35, %rs1;
+
+$L__BB0_17:
+setp.ne.s16 %p19, %rs42, 0;
+@%p19 bra $L__BB0_5;
+
+add.s32 %r30, %r35, %r3;
+mul.wide.u32 %rd3, %r30, 4;
+add.s64 %rd4, %rd1, %rd3;
+st.global.u32 [%rd4], %r40;
+add.s32 %r31, %r30, 1;
+mul.wide.u32 %rd5, %r31, 4;
+add.s64 %rd6, %rd1, %rd5;
+st.global.u32 [%rd6], %r38;
+add.s32 %r32, %r30, 2;
+mul.wide.u32 %rd7, %r32, 4;
+add.s64 %rd8, %rd1, %rd7;
+st.global.u32 [%rd8], %r37;
+add.s32 %r33, %r30, 3;
+mul.wide.u32 %rd9, %r33, 4;
+add.s64 %rd10, %rd1, %rd9;
+st.global.u32 [%rd10], %r36;
+add.s32 %r35, %r35, 128;
+setp.lt.u32 %p20, %r35, %r19;
+@%p20 bra $L__BB0_4;
+
+$L__BB0_19:
+add.s32 %r34, %r34, 1;
+setp.lt.u32 %p21, %r34, %r19;
+@%p21 bra $L__BB0_2;
+
+$L__BB0_20:
+ret;
+
+}
+//
+.visible .entry _Z31mandelbrot_gpu_vector_multicorejjPj(
+.param .u32 _Z31mandelbrot_gpu_vector_multicorejjPj_param_0,
+.param .u32 _Z31mandelbrot_gpu_vector_multicorejjPj_param_1,
+.param .u64 _Z31mandelbrot_gpu_vector_multicorejjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj(
+.param .u32 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_0,
+.param .u32 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_1,
+.param .u64 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj(
+.param .u32 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_0,
+.param .u32 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_1,
+.param .u64 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj(
+.param .u32 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_0,
+.param .u32 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_1,
+.param .u64 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+
+
