@@ -6,8 +6,6 @@
 #include <cstdint>
 #include <cuda_runtime.h>
 
-/// <--- your code here --->
-
 __global__ void mandelbrot_gpu_scalar(
     uint32_t img_size,
     uint32_t max_iters,
@@ -99,8 +97,6 @@ void launch_mandelbrot_gpu_vector(
 {
     mandelbrot_gpu_vector<<<1, 32>>>(img_size, max_iters, out); // launches vector kernel w/ 1block, 32threads
 }
-
-/// <--- /your code here --->
 
 #include <algorithm>
 #include <chrono>

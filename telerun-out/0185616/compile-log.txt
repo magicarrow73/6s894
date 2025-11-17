@@ -1,0 +1,100 @@
+/tmp/tmpvqup1ufr/source.cpp:140:17: error: use of undeclared identifier 'combined_or'
+  140 |                 combined_or = 0;
+      |                 ^
+/tmp/tmpvqup1ufr/source.cpp:143:21: error: use of undeclared identifier 'combined_or'
+  143 |                     combined_or |= mask_vecs[k]; // bitwise OR
+      |                     ^
+/tmp/tmpvqup1ufr/source.cpp:147:24: error: use of undeclared identifier 'combined_or'
+  147 |                 while (combined_or != 0) {
+      |                        ^
+/tmp/tmpvqup1ufr/source.cpp:200:21: error: use of undeclared identifier 'combined_or'
+  200 |                     combined_or = 0;
+      |                     ^
+/tmp/tmpvqup1ufr/source.cpp:203:25: error: use of undeclared identifier 'combined_or'
+  203 |                         combined_or |= mask_vecs[k]; // bitwise OR
+      |                         ^
+/tmp/tmpvqup1ufr/source.cpp:224:24: error: function definition is not allowed here
+  224 |         uint32_t *out) {
+      |                        ^
+/tmp/tmpvqup1ufr/source.cpp:234:24: error: function definition is not allowed here
+  234 |         uint32_t *out) {
+      |                        ^
+/tmp/tmpvqup1ufr/source.cpp:244:24: error: function definition is not allowed here
+  244 |         uint32_t *out) {
+      |                        ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:59:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/algorithmfwd.h:39:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/initializer_list:42:1: error: namespaces can only be defined in global or namespace scope
+   42 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:59:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/algorithmfwd.h:43:1: error: namespaces can only be defined in global or namespace scope
+   43 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:61:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_heap.h:64:1: error: namespaces can only be defined in global or namespace scope
+   64 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:65:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/uniform_int_dist.h:42:1: error: namespaces can only be defined in global or namespace scope
+   42 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:69:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_tempbuf.h:66:1: error: namespaces can only be defined in global or namespace scope
+   66 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:61:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/stl_algo.h:78:1: error: namespaces can only be defined in global or namespace scope
+   78 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:63:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/ranges_algo.h:36:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/optional:38:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/exception:38:8: error: expected unqualified-id
+   38 | extern "C++" {
+      |        ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:63:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/ranges_algo.h:36:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/optional:38:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/exception:164:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/exception_ptr.h:36:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/cxxabi_init_exception.h:51:1: error: namespaces can only be defined in global or namespace scope
+   51 | {
+      | ^
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/cxxabi_init_exception.h:56:1: error: namespaces can only be defined in global or namespace scope
+   56 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:63:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/ranges_algo.h:36:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/optional:38:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/exception:164:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/exception_ptr.h:37:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/typeinfo:36:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/hash_bytes.h:38:1: error: namespaces can only be defined in global or namespace scope
+   38 | {
+      | ^
+In file included from /tmp/tmpvqup1ufr/source.cpp:254:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/algorithm:63:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/ranges_algo.h:36:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/optional:38:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/exception:164:
+In file included from /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/bits/exception_ptr.h:37:
+/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/typeinfo:45:8: error: expected unqualified-id
+   45 | extern "C++" {
+      |        ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.

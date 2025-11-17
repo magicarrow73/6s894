@@ -49,15 +49,13 @@ void mandelbrot_cpu_scalar(uint32_t img_size, uint32_t max_iters, uint32_t *out)
     }
 }
 
-/// <--- your code here --->
-
 void mandelbrot_cpu_vector(uint32_t img_size, uint32_t max_iters, uint32_t *out)
 {
     // constants vectorized
     __m512 img_size_vec = _mm512_set1_ps(float(img_size));
     __m512 two_point_five = _mm512_set1_ps(2.5f);
-    __m512 two = _mm512_set1_ps(2.0f);
-    __m512 one_point_two_five = _mm512_set1_ps(1.25f);
+    __m512 neg_two = _mm512_set1_ps(-2.0f);
+    __m512 neg_one_point_two_five = _mm512_set1_ps(-1.25f);
     __m512 four = _mm512_set1_ps(4.0f);
     __m512i one_epi = _mm512_set1_epi32(1);
     __m512i max_iters_epi = _mm512_set1_epi32(int32_t(max_iters));
@@ -88,8 +86,8 @@ void mandelbrot_cpu_vector(uint32_t img_size, uint32_t max_iters, uint32_t *out)
             __m512 i_vec = _mm512_set1_ps(float(i));
 
             // get coordinates cx, cy
-            __m512 cx = _mm512_sub_ps(_mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five), two);
-            __m512 cy = _mm512_sub_ps(_mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five), one_point_two_five);
+            __m512 cx = _mm512_add_ps(_mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five), neg_two);
+            __m512 cy = _mm512_add_ps(_mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five), neg_one_point_two_five);
 
             // init x2,y2,w vectors
             __m512 x2 = _mm512_set1_ps(0.0f);
@@ -101,21 +99,21 @@ void mandelbrot_cpu_vector(uint32_t img_size, uint32_t max_iters, uint32_t *out)
 
             while (mask != 0)
             {
+                // update mask
+                mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
+                __mmask16 iters_mask = _mm512_cmp_epi32_mask(iters, max_iters_epi, _MM_CMPINT_LT);
+                mask = _mm512_kand(mask, iters_mask);
                 // compute x,y vectors
 
-                __m512 x = _mm512_sub_ps(_mm512_add_ps(x2, cx), y2);
+                __m512 x = _mm512_add_ps(_mm512_sub_ps(x2, y2), cx);
+                // __m512 y = _mm512_add_ps(_mm512_sub_ps(_mm512_sub_ps(w, x2), y2), cy);
                 __m512 y = _mm512_sub_ps(_mm512_add_ps(w, cy), _mm512_add_ps(x2, y2));
-
-                // compute x2, y2, w; these should not be updated if we have already escaped
+                // compute x2, y2, w; these should not be updated if we have already escaped (hence we multiply w/ mask)
                 x2 = _mm512_mask_mul_ps(x2, mask, x, x);
                 y2 = _mm512_mask_mul_ps(y2, mask, y, y);
                 __m512 z = _mm512_add_ps(x, y);
                 w = _mm512_mask_mul_ps(w, mask, z, z);
 
-                // update mask
-                mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
-                __mmask16 iters_mask = _mm512_cmp_epi32_mask(iters, max_iters_epi, _MM_CMPINT_LT);
-                mask = _mm512_kand(mask, iters_mask);
                 // update iters
                 iters = _mm512_mask_add_epi32(iters, mask, iters, one_epi);
             }

@@ -1,0 +1,4 @@
+/tmp/tmpe63emhfn/source.cpp:155:20: error: use of undeclared identifier 'mask'
+  155 |             while (mask != 0) {
+      |                    ^
+1 error generated.

@@ -13,6 +13,8 @@ constexpr float window_zoom = 1.0 / 10000.0f;
 constexpr float window_x = -0.743643887 - 0.5 * window_zoom;
 constexpr float window_y = 0.131825904 - 0.5 * window_zoom;
 constexpr uint32_t default_max_iters = 2000;
+// use this number of parallel executions given by ILP at any given time.
+constexpr uint32_t ILP_SCALING = 4;
 
 // CPU Scalar Mandelbrot set generation.
 // Based on the "optimized escape time algorithm" in
@@ -69,7 +71,154 @@ uint32_t ceil_div(uint32_t a, uint32_t b) { return (a + b - 1) / b; }
 // Vector + ILP
 
 void mandelbrot_cpu_vector_ilp(uint32_t img_size, uint32_t max_iters, uint32_t *out) {
-    // TODO: Implement this function.
+    // constants vectorized
+    __m512 img_size_vec = _mm512_set1_ps(float(img_size));
+    __m512 window_x_vec = _mm512_set1_ps(window_x);
+    __m512 window_y_vec = _mm512_set1_ps(window_y);
+    __m512 window_zoom_vec = _mm512_set1_ps(window_zoom);
+    __m512 four = _mm512_set1_ps(4.0f);
+    __m512i one_epi = _mm512_set1_epi32(1);
+    __m512i max_iters_epi = _mm512_set1_epi32(int32_t(max_iters));
+    for (uint64_t i = 0; i < img_size; ++i) {
+        for (uint64_t j = 0; j < img_size; j += 16 * ILP_SCALING) {
+            // set float(j) vectors
+            __m512 j_vecs[ILP_SCALING];
+
+#pragma unroll
+            for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                j_vecs[ilp] = _mm512_set_ps(
+                    float(j + ilp * 16 + 15),
+                    float(j + ilp * 16 + 14),
+                    float(j + ilp * 16 + 13),
+                    float(j + ilp * 16 + 12),
+                    float(j + ilp * 16 + 11),
+                    float(j + ilp * 16 + 10),
+                    float(j + ilp * 16 + 9),
+                    float(j + ilp * 16 + 8),
+                    float(j + ilp * 16 + 7),
+                    float(j + ilp * 16 + 6),
+                    float(j + ilp * 16 + 5),
+                    float(j + ilp * 16 + 4),
+                    float(j + ilp * 16 + 3),
+                    float(j + ilp * 16 + 2),
+                    float(j + ilp * 16 + 1),
+                    float(j + ilp * 16 + 0));
+            }
+            // set float(i) vectors
+            __m512 i_vecs[ILP_SCALING];
+            // set coordinates cx, cy vectors
+            __m512 cx_vecs[ILP_SCALING];
+            __m512 cy_vecs[ILP_SCALING];
+
+            // init x2, y2, w
+            __m512 x2_vecs[ILP_SCALING];
+            __m512 y2_vecs[ILP_SCALING];
+            __m512 w_vecs[ILP_SCALING];
+            // init iters_vec, mask_vecs
+            __m512i iters_vec[ILP_SCALING];
+            __mmask16 mask_vecs[ILP_SCALING];
+
+#pragma unroll
+            for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                i_vecs[ilp] = _mm512_set1_ps(float(i));
+
+                __m512 j_vec = j_vecs[ilp];
+                __m512 i_vec = i_vecs[ilp];
+                cx_vecs[ilp] = _mm512_add_ps(
+                    _mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), window_zoom_vec),
+                    window_x_vec);
+                cy_vecs[ilp] = _mm512_add_ps(
+                    _mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), window_zoom_vec),
+                    window_y_vec);
+
+                x2_vecs[ilp] = _mm512_set1_ps(0.0f);
+                y2_vecs[ilp] = _mm512_set1_ps(0.0f);
+                w_vecs[ilp] = _mm512_set1_ps(0.0f);
+                iters_vec[ilp] = _mm512_set1_epi32(0);
+
+                mask_vecs[ilp] = 0xFFFF;
+            }
+            // combined_or to check while loop condition, for simplicity
+            __mmask16 combined_or = 0;
+#pragma unroll
+            for (int k = 0; k < ILP_SCALING; ++k) {
+                combined_or |= mask_vecs[k]; // bitwise OR
+            }
+
+            __m512 x_vecs[ILP_SCALING];
+            __m512 y_vecs[ILP_SCALING];
+            __mmask16 iters_mask[ILP_SCALING];
+            // while loop
+            while (combined_or != 0) {
+
+#pragma unroll
+                for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+
+                    // first, update mask vector
+                    mask_vecs[ilp] = _mm512_cmp_ps_mask(
+                        _mm512_add_ps(x2_vecs[ilp], y2_vecs[ilp]),
+                        four,
+                        _CMP_LE_OQ);
+
+                    // also check num_iters
+                    iters_mask[ilp] = _mm512_cmp_epi32_mask(
+                        iters_vec[ilp],
+                        max_iters_epi,
+                        _MM_CMPINT_LT);
+                    mask_vecs[ilp] = _mm512_kand(mask_vecs[ilp], iters_mask[ilp]);
+
+                    // now compute the vectors for those lanes that are still active (i.e.
+                    // have not escaped and have not reached #iters >= max_iters) compute
+                    // x,y vectors
+                    x_vecs[ilp] = _mm512_add_ps(
+                        _mm512_sub_ps(x2_vecs[ilp], y2_vecs[ilp]),
+                        cx_vecs[ilp]);
+                    y_vecs[ilp] = _mm512_add_ps(
+                        _mm512_sub_ps(
+                            w_vecs[ilp],
+                            _mm512_add_ps(x2_vecs[ilp], y2_vecs[ilp])),
+                        cy_vecs[ilp]);
+
+                    // now compute x2, y2, w vectors
+
+                    x2_vecs[ilp] = _mm512_mask_mul_ps(
+                        x2_vecs[ilp],
+                        mask_vecs[ilp],
+                        x_vecs[ilp],
+                        x_vecs[ilp]);
+                    y2_vecs[ilp] = _mm512_mask_mul_ps(
+                        y2_vecs[ilp],
+                        mask_vecs[ilp],
+                        y_vecs[ilp],
+                        y_vecs[ilp]);
+                    __m512 z_vec = _mm512_add_ps(x_vecs[ilp], y_vecs[ilp]);
+                    w_vecs[ilp] =
+                        _mm512_mask_mul_ps(w_vecs[ilp], mask_vecs[ilp], z_vec, z_vec);
+
+                    // update total #iters
+                    iters_vec[ilp] = _mm512_mask_add_epi32(
+                        iters_vec[ilp],
+                        mask_vecs[ilp],
+                        iters_vec[ilp],
+                        one_epi);
+                }
+
+                combined_or = 0;
+#pragma unroll
+                for (int k = 0; k < ILP_SCALING; ++k) {
+                    combined_or |= mask_vecs[k]; // bitwise OR
+                }
+            }
+            // store results
+
+            for (uint32_t ilp = 0; ilp < ILP_SCALING; ilp++) {
+                uint32_t offset = ilp * 16;
+                _mm512_storeu_si512(
+                    (void *)(out + i * img_size + j + offset),
+                    iters_vec[ilp]);
+            }
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

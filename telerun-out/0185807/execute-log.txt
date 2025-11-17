@@ -1,0 +1,20 @@
+Testing with image size 1024x1024 and 2000 max iterations.
+
+Running mandelbrot_cpu_scalar ...
+  Runtime: 347.60 ms
+
+Running mandelbrot_cpu_vector_ilp ...
+  Runtime:  33.42 ms
+  Correctness: average output difference from reference = 0.000499621
+
+Running mandelbrot_cpu_vector_multicore ...
+  Runtime:   0.00 ms
+  Correctness: average output difference from reference = 0.0659083
+
+Running mandelbrot_cpu_vector_multicore_multithread ...
+  Runtime:   0.00 ms
+  Correctness: average output difference from reference = 0.0659083
+
+Running mandelbrot_cpu_vector_multicore_multithread_ilp ...
+  Runtime:   0.00 ms
+  Correctness: average output difference from reference = 0.0659083

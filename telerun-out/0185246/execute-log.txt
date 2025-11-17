@@ -1,0 +1,3 @@
+Latency of fma_latency code snippet = 2 cycles
+Latency of fma_latency_interleaved code snippet = 2 cycles
+Latency of fma_latency_no_interleave code snippet = 2 cycles

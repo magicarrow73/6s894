@@ -31,7 +31,10 @@ fma_latency(data_type *n, unsigned long long *d_start, unsigned long long *d_end
     __threadfence();
     start_time = clock_cycle();
 
-    /// <--- /your code here --->
+#pragma unroll
+    for (int i = 0; i < 2000; i++) {
+        x = fmaf(x, 1.0f, 1.0f);
+    }
 
     end_time = clock_cycle();
 
@@ -57,7 +60,11 @@ __global__ void fma_latency_interleaved(
 
     start_time = clock_cycle();
 
-    /// <--- /your code here --->
+#pragma unroll
+    for (int i = 0; i < 1000; i++) {
+        x = fmaf(x, 1.0f, 1.0f);
+        y = fmaf(y, 1.0f, 1.0f);
+    }
 
     end_time = clock_cycle();
 
@@ -84,7 +91,14 @@ __global__ void fma_latency_no_interleave(
 
     start_time = clock_cycle();
 
-    /// <--- /your code here --->
+#pragma unroll
+    for (int i = 0; i < 1000; i++) {
+        x = fmaf(x, 1.0f, 1.0f);
+    }
+#pragma unroll
+    for (int i = 0; i < 1000; i++) {
+        y = fmaf(y, 1.0f, 1.0f);
+    }
 
     end_time = clock_cycle();
 

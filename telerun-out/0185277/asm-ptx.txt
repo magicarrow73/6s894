@@ -1,0 +1,214 @@
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin ptx code:
+================
+arch = sm_89
+code version = [8,7]
+host = linux
+compile_size = 64bit
+compressed
+ptxasOptions = 
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry _Z11fma_latencyPfPyS0_(
+.param .u64 _Z11fma_latencyPfPyS0__param_0,
+.param .u64 _Z11fma_latencyPfPyS0__param_1,
+.param .u64 _Z11fma_latencyPfPyS0__param_2
+)
+{
+.reg .pred %p<2>;
+.reg .f32 %f<21>;
+.reg .b32 %r<5>;
+.reg .b64 %rd<12>;
+
+
+ld.param.u64 %rd8, [_Z11fma_latencyPfPyS0__param_0];
+ld.param.u64 %rd4, [_Z11fma_latencyPfPyS0__param_1];
+ld.param.u64 %rd9, [_Z11fma_latencyPfPyS0__param_2];
+cvta.to.global.u64 %rd1, %rd9;
+//
+mov.u64 %rd5, %clock64;
+//
+//
+mov.u64 %rd6, %clock64;
+//
+cvta.to.global.u64 %rd2, %rd8;
+ld.global.f32 %f20, [%rd2];
+membar.gl;
+//
+mov.u64 %rd7, %clock64;
+//
+mov.u32 %r4, 0;
+
+$L__BB0_1:
+mov.f32 %f4, 0f3F800000;
+fma.rn.ftz.f32 %f5, %f20, %f4, %f4;
+fma.rn.ftz.f32 %f6, %f5, %f4, %f4;
+fma.rn.ftz.f32 %f7, %f6, %f4, %f4;
+fma.rn.ftz.f32 %f8, %f7, %f4, %f4;
+fma.rn.ftz.f32 %f9, %f8, %f4, %f4;
+fma.rn.ftz.f32 %f10, %f9, %f4, %f4;
+fma.rn.ftz.f32 %f11, %f10, %f4, %f4;
+fma.rn.ftz.f32 %f12, %f11, %f4, %f4;
+fma.rn.ftz.f32 %f13, %f12, %f4, %f4;
+fma.rn.ftz.f32 %f14, %f13, %f4, %f4;
+fma.rn.ftz.f32 %f15, %f14, %f4, %f4;
+fma.rn.ftz.f32 %f16, %f15, %f4, %f4;
+fma.rn.ftz.f32 %f17, %f16, %f4, %f4;
+fma.rn.ftz.f32 %f18, %f17, %f4, %f4;
+fma.rn.ftz.f32 %f19, %f18, %f4, %f4;
+fma.rn.ftz.f32 %f20, %f19, %f4, %f4;
+add.s32 %r4, %r4, 16;
+setp.ne.s32 %p1, %r4, 2000;
+@%p1 bra $L__BB0_1;
+
+cvta.to.global.u64 %rd11, %rd4;
+//
+mov.u64 %rd10, %clock64;
+//
+st.global.f32 [%rd2], %f20;
+st.global.u64 [%rd11], %rd7;
+st.global.u64 [%rd1], %rd10;
+ret;
+
+}
+//
+.visible .entry _Z23fma_latency_interleavedPfPyS0_(
+.param .u64 _Z23fma_latency_interleavedPfPyS0__param_0,
+.param .u64 _Z23fma_latency_interleavedPfPyS0__param_1,
+.param .u64 _Z23fma_latency_interleavedPfPyS0__param_2
+)
+{
+.reg .f32 %f<5>;
+.reg .b64 %rd<11>;
+
+
+ld.param.u64 %rd5, [_Z23fma_latency_interleavedPfPyS0__param_0];
+ld.param.u64 %rd6, [_Z23fma_latency_interleavedPfPyS0__param_1];
+ld.param.u64 %rd7, [_Z23fma_latency_interleavedPfPyS0__param_2];
+cvta.to.global.u64 %rd8, %rd7;
+cvta.to.global.u64 %rd9, %rd6;
+cvta.to.global.u64 %rd10, %rd5;
+//
+mov.u64 %rd1, %clock64;
+//
+//
+mov.u64 %rd2, %clock64;
+//
+ld.global.f32 %f1, [%rd10];
+membar.gl;
+//
+mov.u64 %rd3, %clock64;
+//
+mov.f32 %f2, 0f3F800000;
+fma.rn.ftz.f32 %f3, %f1, %f2, %f2;
+//
+mov.u64 %rd4, %clock64;
+//
+add.ftz.f32 %f4, %f1, %f3;
+st.global.f32 [%rd10], %f4;
+st.global.u64 [%rd9], %rd3;
+st.global.u64 [%rd8], %rd4;
+ret;
+
+}
+//
+.visible .entry _Z25fma_latency_no_interleavePfPyS0_(
+.param .u64 _Z25fma_latency_no_interleavePfPyS0__param_0,
+.param .u64 _Z25fma_latency_no_interleavePfPyS0__param_1,
+.param .u64 _Z25fma_latency_no_interleavePfPyS0__param_2
+)
+{
+.reg .pred %p<3>;
+.reg .f32 %f<25>;
+.reg .b32 %r<9>;
+.reg .b64 %rd<12>;
+
+
+ld.param.u64 %rd9, [_Z25fma_latency_no_interleavePfPyS0__param_0];
+ld.param.u64 %rd5, [_Z25fma_latency_no_interleavePfPyS0__param_1];
+ld.param.u64 %rd10, [_Z25fma_latency_no_interleavePfPyS0__param_2];
+cvta.to.global.u64 %rd1, %rd10;
+//
+mov.u64 %rd6, %clock64;
+//
+//
+mov.u64 %rd7, %clock64;
+//
+cvta.to.global.u64 %rd2, %rd9;
+ld.global.f32 %f24, [%rd2];
+membar.gl;
+//
+mov.u64 %rd8, %clock64;
+//
+mov.u32 %r7, 0;
+mov.f32 %f23, %f24;
+
+$L__BB2_1:
+mov.f32 %f6, 0f3F800000;
+fma.rn.ftz.f32 %f7, %f23, %f6, %f6;
+fma.rn.ftz.f32 %f8, %f7, %f6, %f6;
+fma.rn.ftz.f32 %f9, %f8, %f6, %f6;
+fma.rn.ftz.f32 %f10, %f9, %f6, %f6;
+fma.rn.ftz.f32 %f11, %f10, %f6, %f6;
+fma.rn.ftz.f32 %f12, %f11, %f6, %f6;
+fma.rn.ftz.f32 %f13, %f12, %f6, %f6;
+fma.rn.ftz.f32 %f23, %f13, %f6, %f6;
+add.s32 %r7, %r7, 8;
+setp.ne.s32 %p1, %r7, 1000;
+@%p1 bra $L__BB2_1;
+
+cvta.to.global.u64 %rd4, %rd5;
+mov.u32 %r8, 0;
+
+$L__BB2_3:
+mov.f32 %f14, 0f3F800000;
+fma.rn.ftz.f32 %f15, %f24, %f14, %f14;
+fma.rn.ftz.f32 %f16, %f15, %f14, %f14;
+fma.rn.ftz.f32 %f17, %f16, %f14, %f14;
+fma.rn.ftz.f32 %f18, %f17, %f14, %f14;
+fma.rn.ftz.f32 %f19, %f18, %f14, %f14;
+fma.rn.ftz.f32 %f20, %f19, %f14, %f14;
+fma.rn.ftz.f32 %f21, %f20, %f14, %f14;
+fma.rn.ftz.f32 %f24, %f21, %f14, %f14;
+add.s32 %r8, %r8, 8;
+setp.ne.s32 %p2, %r8, 1000;
+@%p2 bra $L__BB2_3;
+
+//
+mov.u64 %rd11, %clock64;
+//
+add.ftz.f32 %f22, %f23, %f24;
+st.global.f32 [%rd2], %f22;
+st.global.u64 [%rd4], %rd8;
+st.global.u64 [%rd1], %rd11;
+ret;
+
+}
+
+
