@@ -1,7 +1,0 @@
-Testing with image size 256x256 and 1000 max iterations.
-Running launch_mandelbrot_gpu_scalar ...
-  Runtime: 308.929 ms
-  Correctness: average output difference from reference = 0
-Running launch_mandelbrot_gpu_vector ...
-  Runtime: 0.003746 ms
-  Correctness: average output difference from reference 0.248333

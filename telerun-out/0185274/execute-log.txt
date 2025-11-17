@@ -1,3 +1,0 @@
-Latency of fma_latency code snippet = 4004 cycles
-Latency of fma_latency_interleaved code snippet = 4227 cycles
-Latency of fma_latency_no_interleave code snippet = 4004 cycles
