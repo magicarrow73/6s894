@@ -1,0 +1,9 @@
+/tmp/tmp94htev4b/source.cu(271): error: expected a ";"
+      uint32_t ceil_div(uint32_t a, uint32_t b) { return (a + b - 1) / b; }
+                                                ^
+
+/tmp/tmp94htev4b/source.cu(276): error: identifier "thread_id" is undefined
+          for (uint64_t j = thread_id; j < img_size; j += j_stride) {
+                            ^
+
+2 errors detected in the compilation of "/tmp/tmp94htev4b/source.cu".

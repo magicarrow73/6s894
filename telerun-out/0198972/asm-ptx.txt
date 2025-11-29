@@ -1,0 +1,537 @@
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin ptx code:
+================
+arch = sm_89
+code version = [8,7]
+host = linux
+compile_size = 64bit
+compressed
+ptxasOptions = 
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry _Z21mandelbrot_gpu_vectorjjPj(
+.param .u32 _Z21mandelbrot_gpu_vectorjjPj_param_0,
+.param .u32 _Z21mandelbrot_gpu_vectorjjPj_param_1,
+.param .u64 _Z21mandelbrot_gpu_vectorjjPj_param_2
+)
+{
+.reg .pred %p<16>;
+.reg .f32 %f<29>;
+.reg .b32 %r<15>;
+.reg .b64 %rd<44>;
+
+
+ld.param.u32 %r3, [_Z21mandelbrot_gpu_vectorjjPj_param_0];
+ld.param.u32 %r4, [_Z21mandelbrot_gpu_vectorjjPj_param_1];
+ld.param.u64 %rd25, [_Z21mandelbrot_gpu_vectorjjPj_param_2];
+cvta.to.global.u64 %rd1, %rd25;
+cvt.u64.u32 %rd2, %r3;
+setp.eq.s32 %p1, %r3, 0;
+@%p1 bra $L__BB0_19;
+
+mov.u32 %r5, %tid.x;
+cvt.u64.u32 %rd3, %r5;
+cvt.rn.f32.u32 %f1, %r3;
+setp.eq.s32 %p2, %r4, 0;
+@%p2 bra $L__BB0_9;
+
+mov.u64 %rd38, 0;
+cvt.u32.u64 %r6, %rd3;
+
+$L__BB0_3:
+setp.ge.u32 %p3, %r6, %r3;
+@%p3 bra $L__BB0_8;
+
+cvt.rn.f32.u64 %f12, %rd38;
+div.approx.ftz.f32 %f13, %f12, %f1;
+fma.rn.ftz.f32 %f2, %f13, 0f38D1B717, 0f3E06F043;
+mul.lo.s64 %rd5, %rd38, %rd2;
+mov.u64 %rd39, %rd3;
+
+$L__BB0_5:
+cvt.rn.f32.u64 %f18, %rd39;
+div.approx.ftz.f32 %f19, %f18, %f1;
+fma.rn.ftz.f32 %f3, %f19, 0f38D1B717, 0fBF3E62B9;
+mov.f32 %f25, 0f00000000;
+mov.u32 %r14, 0;
+mov.f32 %f26, %f25;
+mov.f32 %f27, %f25;
+mov.f32 %f28, %f25;
+
+$L__BB0_6:
+mov.u32 %r1, %r14;
+sub.ftz.f32 %f20, %f28, %f27;
+add.ftz.f32 %f21, %f3, %f20;
+sub.ftz.f32 %f22, %f26, %f25;
+add.ftz.f32 %f23, %f2, %f22;
+mul.ftz.f32 %f28, %f21, %f21;
+mul.ftz.f32 %f27, %f23, %f23;
+add.ftz.f32 %f24, %f21, %f23;
+mul.ftz.f32 %f26, %f24, %f24;
+add.ftz.f32 %f25, %f28, %f27;
+setp.le.ftz.f32 %p4, %f25, 0f40800000;
+add.s32 %r14, %r1, 1;
+setp.lt.u32 %p5, %r14, %r4;
+and.pred %p6, %p4, %p5;
+@%p6 bra $L__BB0_6;
+
+add.s64 %rd27, %rd39, %rd5;
+shl.b64 %rd28, %rd27, 2;
+add.s64 %rd29, %rd1, %rd28;
+add.s32 %r13, %r1, 1;
+st.global.u32 [%rd29], %r13;
+add.s64 %rd39, %rd39, 32;
+setp.lt.u64 %p7, %rd39, %rd2;
+@%p7 bra $L__BB0_5;
+
+$L__BB0_8:
+add.s64 %rd38, %rd38, 1;
+setp.lt.u64 %p8, %rd38, %rd2;
+@%p8 bra $L__BB0_3;
+bra.uni $L__BB0_19;
+
+$L__BB0_9:
+not.b64 %rd31, %rd3;
+add.s64 %rd9, %rd31, %rd2;
+shr.u64 %rd32, %rd9, 5;
+add.s64 %rd33, %rd32, 1;
+and.b64 %rd10, %rd33, 3;
+add.s64 %rd11, %rd3, 32;
+add.s64 %rd12, %rd3, 64;
+add.s64 %rd13, %rd3, 96;
+add.s64 %rd14, %rd1, 256;
+mov.u64 %rd40, 0;
+cvt.u32.u64 %r8, %rd3;
+
+$L__BB0_10:
+setp.ge.u32 %p9, %r8, %r3;
+@%p9 bra $L__BB0_18;
+
+setp.eq.s64 %p10, %rd10, 0;
+mul.lo.s64 %rd16, %rd40, %rd2;
+mov.u64 %rd41, %rd3;
+@%p10 bra $L__BB0_15;
+
+setp.eq.s64 %p11, %rd10, 1;
+add.s64 %rd34, %rd16, %rd3;
+shl.b64 %rd35, %rd34, 2;
+add.s64 %rd17, %rd1, %rd35;
+mov.u32 %r9, 0;
+st.global.u32 [%rd17], %r9;
+mov.u64 %rd41, %rd11;
+@%p11 bra $L__BB0_15;
+
+setp.eq.s64 %p12, %rd10, 2;
+st.global.u32 [%rd17+128], %r9;
+mov.u64 %rd41, %rd12;
+@%p12 bra $L__BB0_15;
+
+mov.u32 %r11, 0;
+st.global.u32 [%rd17+256], %r11;
+mov.u64 %rd41, %rd13;
+
+$L__BB0_15:
+setp.lt.u64 %p13, %rd9, 96;
+@%p13 bra $L__BB0_18;
+
+add.s64 %rd36, %rd41, %rd16;
+shl.b64 %rd37, %rd36, 2;
+add.s64 %rd42, %rd14, %rd37;
+
+$L__BB0_17:
+mov.u32 %r12, 0;
+st.global.u32 [%rd42+-256], %r12;
+st.global.u32 [%rd42+-128], %r12;
+st.global.u32 [%rd42], %r12;
+st.global.u32 [%rd42+128], %r12;
+add.s64 %rd42, %rd42, 512;
+add.s64 %rd41, %rd41, 128;
+setp.lt.u64 %p14, %rd41, %rd2;
+@%p14 bra $L__BB0_17;
+
+$L__BB0_18:
+add.s64 %rd40, %rd40, 1;
+setp.lt.u64 %p15, %rd40, %rd2;
+@%p15 bra $L__BB0_10;
+
+$L__BB0_19:
+ret;
+
+}
+//
+.visible .entry _Z25mandelbrot_gpu_vector_ilpjjPj(
+.param .u32 _Z25mandelbrot_gpu_vector_ilpjjPj_param_0,
+.param .u32 _Z25mandelbrot_gpu_vector_ilpjjPj_param_1,
+.param .u64 _Z25mandelbrot_gpu_vector_ilpjjPj_param_2
+)
+{
+.reg .pred %p<38>;
+.reg .f32 %f<129>;
+.reg .b32 %r<88>;
+.reg .b64 %rd<19>;
+
+
+ld.param.u32 %r38, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_0];
+ld.param.u32 %r39, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_1];
+ld.param.u64 %rd2, [_Z25mandelbrot_gpu_vector_ilpjjPj_param_2];
+cvta.to.global.u64 %rd1, %rd2;
+mov.u32 %r1, %tid.x;
+setp.eq.s32 %p1, %r38, 0;
+@%p1 bra $L__BB1_41;
+
+cvt.rn.f32.u32 %f1, %r38;
+mov.u32 %r68, 0;
+
+$L__BB1_2:
+setp.ge.u32 %p2, %r1, %r38;
+@%p2 bra $L__BB1_40;
+
+setp.eq.s32 %p3, %r39, 0;
+cvt.rn.f32.u32 %f63, %r68;
+div.approx.ftz.f32 %f64, %f63, %f1;
+fma.rn.ftz.f32 %f2, %f64, 0f38D1B717, 0f3E06F043;
+mul.lo.s32 %r3, %r68, %r38;
+@%p3 bra $L__BB1_32;
+
+mov.u32 %r69, %r1;
+
+$L__BB1_5:
+cvt.rn.f32.u32 %f73, %r69;
+div.approx.ftz.f32 %f74, %f73, %f1;
+fma.rn.ftz.f32 %f3, %f74, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r46, %r69, 32;
+cvt.rn.f32.u32 %f75, %r46;
+div.approx.ftz.f32 %f76, %f75, %f1;
+fma.rn.ftz.f32 %f4, %f76, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r47, %r69, 64;
+cvt.rn.f32.u32 %f77, %r47;
+div.approx.ftz.f32 %f78, %f77, %f1;
+fma.rn.ftz.f32 %f5, %f78, 0f38D1B717, 0fBF3E62B9;
+add.s32 %r48, %r69, 96;
+cvt.rn.f32.u32 %f79, %r48;
+div.approx.ftz.f32 %f80, %f79, %f1;
+fma.rn.ftz.f32 %f6, %f80, 0f38D1B717, 0fBF3E62B9;
+mov.f32 %f120, 0f00000000;
+mov.u32 %r78, 0;
+mov.u32 %r70, 2;
+mov.u32 %r77, %r78;
+mov.u32 %r76, %r78;
+mov.u32 %r75, %r78;
+mov.f32 %f119, %f120;
+mov.f32 %f118, %f120;
+mov.f32 %f117, %f120;
+mov.f32 %f116, %f120;
+mov.f32 %f114, %f120;
+mov.f32 %f113, %f120;
+mov.f32 %f115, %f120;
+
+$L__BB1_6:
+.pragma "nounroll";
+mul.ftz.f32 %f15, %f113, %f113;
+mul.ftz.f32 %f16, %f114, %f114;
+add.ftz.f32 %f81, %f15, %f16;
+setp.gtu.ftz.f32 %p4, %f81, 0f40800000;
+@%p4 bra $L__BB1_8;
+
+sub.ftz.f32 %f82, %f16, %f15;
+add.ftz.f32 %f17, %f3, %f82;
+add.ftz.f32 %f83, %f114, %f114;
+fma.rn.ftz.f32 %f113, %f113, %f83, %f2;
+add.s32 %r75, %r75, 1;
+mov.f32 %f114, %f17;
+
+$L__BB1_8:
+mul.ftz.f32 %f21, %f116, %f116;
+mul.ftz.f32 %f22, %f115, %f115;
+add.ftz.f32 %f84, %f22, %f21;
+setp.gtu.ftz.f32 %p5, %f84, 0f40800000;
+@%p5 bra $L__BB1_10;
+
+sub.ftz.f32 %f85, %f22, %f21;
+add.ftz.f32 %f23, %f4, %f85;
+add.ftz.f32 %f86, %f115, %f115;
+fma.rn.ftz.f32 %f116, %f86, %f116, %f2;
+add.s32 %r76, %r76, 1;
+mov.f32 %f115, %f23;
+
+$L__BB1_10:
+mul.ftz.f32 %f27, %f118, %f118;
+mul.ftz.f32 %f28, %f117, %f117;
+add.ftz.f32 %f87, %f28, %f27;
+setp.gtu.ftz.f32 %p6, %f87, 0f40800000;
+@%p6 bra $L__BB1_12;
+
+sub.ftz.f32 %f88, %f28, %f27;
+add.ftz.f32 %f29, %f5, %f88;
+add.ftz.f32 %f89, %f117, %f117;
+fma.rn.ftz.f32 %f118, %f89, %f118, %f2;
+add.s32 %r77, %r77, 1;
+mov.f32 %f117, %f29;
+
+$L__BB1_12:
+mul.ftz.f32 %f33, %f120, %f120;
+mul.ftz.f32 %f34, %f119, %f119;
+add.ftz.f32 %f90, %f34, %f33;
+setp.gtu.ftz.f32 %p7, %f90, 0f40800000;
+@%p7 bra $L__BB1_14;
+
+sub.ftz.f32 %f91, %f34, %f33;
+add.ftz.f32 %f35, %f6, %f91;
+add.ftz.f32 %f92, %f119, %f119;
+fma.rn.ftz.f32 %f120, %f92, %f120, %f2;
+add.s32 %r78, %r78, 1;
+mov.f32 %f119, %f35;
+
+$L__BB1_14:
+setp.ge.u32 %p8, %r76, %r39;
+setp.ge.u32 %p9, %r75, %r39;
+and.pred %p10, %p9, %p8;
+setp.ge.u32 %p11, %r77, %r39;
+and.pred %p12, %p10, %p11;
+setp.ge.u32 %p13, %r78, %r39;
+and.pred %p14, %p12, %p13;
+@%p14 bra $L__BB1_25;
+
+add.s32 %r49, %r70, -1;
+setp.ge.u32 %p15, %r49, %r39;
+@%p15 bra $L__BB1_25;
+
+mul.ftz.f32 %f39, %f114, %f114;
+mul.ftz.f32 %f40, %f113, %f113;
+add.ftz.f32 %f93, %f40, %f39;
+setp.gtu.ftz.f32 %p16, %f93, 0f40800000;
+@%p16 bra $L__BB1_18;
+
+sub.ftz.f32 %f94, %f39, %f40;
+add.ftz.f32 %f41, %f3, %f94;
+add.ftz.f32 %f95, %f114, %f114;
+fma.rn.ftz.f32 %f113, %f113, %f95, %f2;
+add.s32 %r75, %r75, 1;
+mov.f32 %f114, %f41;
+
+$L__BB1_18:
+mul.ftz.f32 %f45, %f116, %f116;
+mul.ftz.f32 %f46, %f115, %f115;
+add.ftz.f32 %f96, %f46, %f45;
+setp.gtu.ftz.f32 %p17, %f96, 0f40800000;
+@%p17 bra $L__BB1_20;
+
+sub.ftz.f32 %f97, %f46, %f45;
+add.ftz.f32 %f47, %f4, %f97;
+add.ftz.f32 %f98, %f115, %f115;
+fma.rn.ftz.f32 %f116, %f98, %f116, %f2;
+add.s32 %r76, %r76, 1;
+mov.f32 %f115, %f47;
+
+$L__BB1_20:
+mul.ftz.f32 %f51, %f118, %f118;
+mul.ftz.f32 %f52, %f117, %f117;
+add.ftz.f32 %f99, %f52, %f51;
+setp.gtu.ftz.f32 %p18, %f99, 0f40800000;
+@%p18 bra $L__BB1_22;
+
+sub.ftz.f32 %f100, %f52, %f51;
+add.ftz.f32 %f53, %f5, %f100;
+add.ftz.f32 %f101, %f117, %f117;
+fma.rn.ftz.f32 %f118, %f101, %f118, %f2;
+add.s32 %r77, %r77, 1;
+mov.f32 %f117, %f53;
+
+$L__BB1_22:
+mul.ftz.f32 %f57, %f120, %f120;
+mul.ftz.f32 %f58, %f119, %f119;
+add.ftz.f32 %f102, %f58, %f57;
+setp.gtu.ftz.f32 %p19, %f102, 0f40800000;
+@%p19 bra $L__BB1_24;
+
+sub.ftz.f32 %f103, %f58, %f57;
+add.ftz.f32 %f59, %f6, %f103;
+add.ftz.f32 %f104, %f119, %f119;
+fma.rn.ftz.f32 %f120, %f104, %f120, %f2;
+add.s32 %r78, %r78, 1;
+mov.f32 %f119, %f59;
+
+$L__BB1_24:
+setp.lt.u32 %p20, %r76, %r39;
+setp.lt.u32 %p21, %r75, %r39;
+or.pred %p22, %p21, %p20;
+setp.lt.u32 %p23, %r77, %r39;
+or.pred %p24, %p22, %p23;
+setp.lt.u32 %p25, %r78, %r39;
+or.pred %p26, %p24, %p25;
+setp.lt.u32 %p27, %r70, %r39;
+and.pred %p28, %p26, %p27;
+add.s32 %r70, %r70, 2;
+@%p28 bra $L__BB1_6;
+
+$L__BB1_25:
+add.s32 %r50, %r69, %r3;
+mul.wide.u32 %rd3, %r50, 4;
+add.s64 %rd4, %rd1, %rd3;
+st.global.u32 [%rd4], %r75;
+setp.ge.u32 %p29, %r46, %r38;
+@%p29 bra $L__BB1_27;
+
+add.s32 %r53, %r50, 32;
+mul.wide.u32 %rd5, %r53, 4;
+add.s64 %rd6, %rd1, %rd5;
+st.global.u32 [%rd6], %r76;
+
+$L__BB1_27:
+setp.ge.u32 %p30, %r47, %r38;
+@%p30 bra $L__BB1_29;
+
+add.s32 %r56, %r50, 64;
+mul.wide.u32 %rd7, %r56, 4;
+add.s64 %rd8, %rd1, %rd7;
+st.global.u32 [%rd8], %r77;
+
+$L__BB1_29:
+setp.ge.u32 %p31, %r48, %r38;
+@%p31 bra $L__BB1_31;
+
+add.s32 %r59, %r50, 96;
+mul.wide.u32 %rd9, %r59, 4;
+add.s64 %rd10, %rd1, %rd9;
+st.global.u32 [%rd10], %r78;
+
+$L__BB1_31:
+add.s32 %r69, %r69, 128;
+setp.lt.u32 %p32, %r69, %r38;
+@%p32 bra $L__BB1_5;
+bra.uni $L__BB1_40;
+
+$L__BB1_32:
+mov.u32 %r87, %r1;
+
+$L__BB1_33:
+add.s32 %r33, %r87, 64;
+add.s32 %r34, %r87, 96;
+add.s32 %r60, %r87, %r3;
+mul.wide.u32 %rd11, %r60, 4;
+add.s64 %rd12, %rd1, %rd11;
+mov.u32 %r61, 0;
+st.global.u32 [%rd12], %r61;
+add.s32 %r35, %r87, 32;
+setp.ge.u32 %p33, %r35, %r38;
+@%p33 bra $L__BB1_35;
+
+add.s32 %r62, %r35, %r3;
+mul.wide.u32 %rd13, %r62, 4;
+add.s64 %rd14, %rd1, %rd13;
+st.global.u32 [%rd14], %r61;
+
+$L__BB1_35:
+setp.ge.u32 %p34, %r33, %r38;
+@%p34 bra $L__BB1_37;
+
+add.s32 %r64, %r33, %r3;
+mul.wide.u32 %rd15, %r64, 4;
+add.s64 %rd16, %rd1, %rd15;
+mov.u32 %r65, 0;
+st.global.u32 [%rd16], %r65;
+
+$L__BB1_37:
+setp.ge.u32 %p35, %r34, %r38;
+@%p35 bra $L__BB1_39;
+
+add.s32 %r66, %r34, %r3;
+mul.wide.u32 %rd17, %r66, 4;
+add.s64 %rd18, %rd1, %rd17;
+mov.u32 %r67, 0;
+st.global.u32 [%rd18], %r67;
+
+$L__BB1_39:
+add.s32 %r87, %r87, 128;
+setp.lt.u32 %p36, %r87, %r38;
+@%p36 bra $L__BB1_33;
+
+$L__BB1_40:
+add.s32 %r68, %r68, 1;
+setp.lt.u32 %p37, %r68, %r38;
+@%p37 bra $L__BB1_2;
+
+$L__BB1_41:
+ret;
+
+}
+//
+.visible .entry _Z31mandelbrot_gpu_vector_multicorejjPj(
+.param .u32 _Z31mandelbrot_gpu_vector_multicorejjPj_param_0,
+.param .u32 _Z31mandelbrot_gpu_vector_multicorejjPj_param_1,
+.param .u64 _Z31mandelbrot_gpu_vector_multicorejjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj(
+.param .u32 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_0,
+.param .u32 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_1,
+.param .u64 _Z53mandelbrot_gpu_vector_multicore_multithread_single_smjjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj(
+.param .u32 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_0,
+.param .u32 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_1,
+.param .u64 _Z48mandelbrot_gpu_vector_multicore_multithread_fulljjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj(
+.param .u32 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_0,
+.param .u32 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_1,
+.param .u64 _Z52mandelbrot_gpu_vector_multicore_multithread_full_ilpjjPj_param_2
+)
+{
+
+
+
+ret;
+
+}
+
+

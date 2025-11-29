@@ -1,0 +1,4 @@
+/tmp/tmpnbky9gnh/source.cpp:623:62: error: expected ';' in 'for' statement specifier
+  623 |     for (uint32_t t = 0; t < num_cores * num_threads_per_core) {
+      |                                                              ^
+1 error generated.

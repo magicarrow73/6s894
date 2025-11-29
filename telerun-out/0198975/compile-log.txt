@@ -1,0 +1,8 @@
+/tmp/tmpgu0oek9y/source.cu(23): warning #177-D: variable "ILP_SCALING" was declared but never referenced
+  constexpr uint32_t ILP_SCALING = 4;
+                     ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+asm succesfully generated.

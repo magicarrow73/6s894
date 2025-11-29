@@ -1,0 +1,5 @@
+/tmp/tmp_83n0a5i/source.cu(95): error: identifier "ILP" is undefined
+          for (uint32_t j = lane; j < img_size; j += 32 * ILP) {
+                                                          ^
+
+1 error detected in the compilation of "/tmp/tmp_83n0a5i/source.cu".

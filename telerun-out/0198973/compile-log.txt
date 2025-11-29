@@ -1,0 +1,5 @@
+/tmp/tmpindas1mk/source.cu(255): error: too few arguments in function call
+      mandelbrot_gpu_vector_ilp<<<1, 32>>>(img_size, max_iters, out);
+                                                                   ^
+
+1 error detected in the compilation of "/tmp/tmpindas1mk/source.cu".

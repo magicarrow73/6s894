@@ -1,0 +1,4 @@
+/tmp/tmp1h5n3dge/source.cpp:311:34: error: function definition is not allowed here
+  311 |     void *thread_func(void *arg) {
+      |                                  ^
+1 error generated.

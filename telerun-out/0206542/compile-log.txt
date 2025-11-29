@@ -1,0 +1,13 @@
+/tmp/tmpcfkzud6g/source.cpp:347:67: error: use of undeclared identifier 'two_point_five'
+  347 |                 _mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmpcfkzud6g/source.cpp:348:17: error: use of undeclared identifier 'neg_two'
+  348 |                 neg_two);
+      |                 ^
+/tmp/tmpcfkzud6g/source.cpp:350:67: error: use of undeclared identifier 'two_point_five'
+  350 |                 _mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmpcfkzud6g/source.cpp:351:17: error: use of undeclared identifier 'neg_one_point_two_five'
+  351 |                 neg_one_point_two_five);
+      |                 ^
+4 errors generated.

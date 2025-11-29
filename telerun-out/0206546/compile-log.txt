@@ -1,0 +1,6 @@
+/tmp/tmpuc0i1v1m/source.cpp:387:1: warning: non-void function does not return a value [-Wreturn-type]
+  387 | }
+      | ^
+1 warning generated.
+
+asm succesfully generated.

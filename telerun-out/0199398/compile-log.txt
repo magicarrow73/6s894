@@ -1,0 +1,8 @@
+/tmp/tmpfr6hdl3l/source.cu(324): warning #177-D: variable "thread_id" was declared but never referenced
+      uint32_t thread_id = blockIdx.x * blockDim.x + threadIdx.x;
+               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+asm succesfully generated.

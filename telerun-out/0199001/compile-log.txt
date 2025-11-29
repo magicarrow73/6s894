@@ -1,0 +1,5 @@
+/tmp/tmp0jn8132r/source.cu(317): error: function "mandelbrot_gpu_vector_multicore_multithread_full_ilp" has already been defined (previous definition at line 307)
+  __attribute__((global)) void mandelbrot_gpu_vector_multicore_multithread_full_ilp(
+                               ^
+
+1 error detected in the compilation of "/tmp/tmp0jn8132r/source.cu".

@@ -1,0 +1,5 @@
+/tmp/tmpsk7atlnz/source.cu(199): error: identifier "mandelbrot_gpu_vector_multicore_multithread_single_sm" is undefined
+      mandelbrot_gpu_vector_multicore_multithread_single_sm<<<48, 4 * 32>>>(
+      ^
+
+1 error detected in the compilation of "/tmp/tmpsk7atlnz/source.cu".

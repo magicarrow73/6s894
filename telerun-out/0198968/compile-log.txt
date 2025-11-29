@@ -1,0 +1,9 @@
+/tmp/tmp2zbofd20/source.cu(100): error: identifier "ILP" is undefined
+          for (uint32_t j = lane; j < img_size; j += 32 * ILP) {
+                                                          ^
+
+/tmp/tmp2zbofd20/source.cu(258): error: identifier "mandelbrot_gpu_vector_ilp" is undefined
+      mandelbrot_gpu_vector_ilp<<<1, 32>>>(img_size, max_iters, out);
+      ^
+
+2 errors detected in the compilation of "/tmp/tmp2zbofd20/source.cu".

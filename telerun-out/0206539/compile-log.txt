@@ -1,0 +1,56 @@
+/tmp/tmp8sz69fkw/source.cpp:339:52: error: use of undeclared identifier 'img_size_vec'
+  339 |                 _mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five),
+      |                                                    ^
+/tmp/tmp8sz69fkw/source.cpp:339:67: error: use of undeclared identifier 'two_point_five'
+  339 |                 _mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmp8sz69fkw/source.cpp:340:17: error: use of undeclared identifier 'neg_two'
+  340 |                 neg_two);
+      |                 ^
+/tmp/tmp8sz69fkw/source.cpp:342:52: error: use of undeclared identifier 'img_size_vec'
+  342 |                 _mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five),
+      |                                                    ^
+/tmp/tmp8sz69fkw/source.cpp:342:67: error: use of undeclared identifier 'two_point_five'
+  342 |                 _mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmp8sz69fkw/source.cpp:343:17: error: use of undeclared identifier 'neg_one_point_two_five'
+  343 |                 neg_one_point_two_five);
+      |                 ^
+/tmp/tmp8sz69fkw/source.cpp:351:72: error: use of undeclared identifier 'four'
+  351 |             __mmask16 mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
+      |                                                                        ^
+/tmp/tmp8sz69fkw/source.cpp:355:66: error: use of undeclared identifier 'four'
+  355 |                 mask = _mm512_cmp_ps_mask(_mm512_add_ps(x2, y2), four, _CMP_LE_OQ);
+      |                                                                  ^
+/tmp/tmp8sz69fkw/source.cpp:357:50: error: use of undeclared identifier 'max_iters_epi'; did you mean 'max_iters'?
+  357 |                     _mm512_cmp_epi32_mask(iters, max_iters_epi, _MM_CMPINT_LT);
+      |                                                  ^~~~~~~~~~~~~
+      |                                                  max_iters
+/usr/lib/llvm-20/lib/clang/20/include/avx512fintrin.h:5002:62: note: expanded from macro '_mm512_cmp_epi32_mask'
+ 5002 |                                           (__v16si)(__m512i)(b), (int)(p), \
+      |                                                              ^
+/tmp/tmp8sz69fkw/source.cpp:310:14: note: 'max_iters' declared here
+  310 |     uint32_t max_iters = data->max_iters;
+      |              ^
+/tmp/tmp8sz69fkw/source.cpp:357:21: error: C-style cast from scalar 'uint32_t' (aka 'unsigned int') to vector '__m512i' (vector of 8 'long long' values) of different size
+  357 |                     _mm512_cmp_epi32_mask(iters, max_iters_epi, _MM_CMPINT_LT);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/lib/llvm-20/lib/clang/20/include/avx512fintrin.h:5002:52: note: expanded from macro '_mm512_cmp_epi32_mask'
+ 5002 |                                           (__v16si)(__m512i)(b), (int)(p), \
+      |                                                    ^~~~~~~~~~~~
+/tmp/tmp8sz69fkw/source.cpp:373:67: error: use of undeclared identifier 'one_epi'
+  373 |                 iters = _mm512_mask_add_epi32(iters, mask, iters, one_epi);
+      |                                                                   ^
+/tmp/tmp8sz69fkw/source.cpp:399:9: error: no matching function for call to 'pthread_create'
+  399 |         pthread_create(&threads[t], nullptr, thread_func, (void *)(&thread_data[t]));
+      |         ^~~~~~~~~~~~~~
+/usr/include/pthread.h:202:12: note: candidate function not viable: no known conversion from 'void (void *)' to 'void *(*)(void *)' for 3rd argument
+  202 | extern int pthread_create (pthread_t *__restrict __newthread,
+      |            ^
+  203 |                            const pthread_attr_t *__restrict __attr,
+  204 |                            void *(*__start_routine) (void *),
+      |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/tmp8sz69fkw/source.cpp:402:30: error: use of undeclared identifier 'num_threads'
+  402 |     for (uint32_t t = 0; t < num_threads; t++) {
+      |                              ^
+13 errors generated.

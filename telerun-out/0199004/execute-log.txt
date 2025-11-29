@@ -1,0 +1,25 @@
+Testing with image size 1024x1024 and 2000 max iterations.
+
+Running launch_mandelbrot_gpu_vector ...
+  Runtime: 167.01 ms
+  Correctness: average output difference from reference 0
+
+Running launch_mandelbrot_gpu_vector_ilp ...
+  Runtime: 398.80 ms
+  Correctness: average output difference from reference 0
+
+Running launch_mandelbrot_gpu_vector_multicore ...
+  Runtime:   7.26 ms
+  Correctness: average output difference from reference 0
+
+Running launch_mandelbrot_gpu_vector_multicore_multithread_single_sm ...
+  Runtime:  14.94 ms
+  Correctness: average output difference from reference 0
+
+Running launch_mandelbrot_gpu_vector_multicore_multithread_full ...
+  Runtime:  14.69 ms
+  Correctness: average output difference from reference 0
+
+Running launch_mandelbrot_gpu_vector_multicore_multithread_full_ilp ...
+  Runtime:   0.00 ms
+  Correctness: average output difference from reference 0.0659083

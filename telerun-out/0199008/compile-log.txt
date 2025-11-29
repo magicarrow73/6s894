@@ -1,0 +1,5 @@
+/tmp/tmpdpw8kdpr/source.cu(272): error: calling a __host__ function("ceil_div(unsigned int, unsigned int)") from a __global__ function("mandelbrot_gpu_vector_multicore_multithread_full") is not allowed
+
+/tmp/tmpdpw8kdpr/source.cu(272): error: identifier "ceil_div" is undefined in device code
+
+2 errors detected in the compilation of "/tmp/tmpdpw8kdpr/source.cu".

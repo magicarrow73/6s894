@@ -1,0 +1,20 @@
+/tmp/tmp0kcx21ph/source.cpp:61:1: error: unknown type name 'kernel'
+   61 | kernel !
+      | ^
+/tmp/tmp0kcx21ph/source.cpp:61:8: error: expected unqualified-id
+   61 | kernel !
+      |        ^
+/tmp/tmp0kcx21ph/source.cpp:312:34: error: function definition is not allowed here
+  312 |     void *thread_func(void *arg) {
+      |                                  ^
+/tmp/tmp0kcx21ph/source.cpp:595:20: error: use of undeclared identifier 'mandelbrot_cpu_vector'; did you mean 'mandelbrot_cpu_vector_ilp'?
+  595 |         BENCHPRESS(mandelbrot_cpu_vector, img_size, max_iters, result.data());
+      |                    ^~~~~~~~~~~~~~~~~~~~~
+      |                    mandelbrot_cpu_vector_ilp
+/tmp/tmp0kcx21ph/source.cpp:528:17: note: expanded from macro 'BENCHPRESS'
+  528 |                 func(__VA_ARGS__); \
+      |                 ^
+/tmp/tmp0kcx21ph/source.cpp:142:6: note: 'mandelbrot_cpu_vector_ilp' declared here
+  142 | void mandelbrot_cpu_vector_ilp(uint32_t img_size, uint32_t max_iters, uint32_t *out) {
+      |      ^
+4 errors generated.

@@ -1,0 +1,11 @@
+/tmp/tmpseok_fyk/source.cu(312): error: expected a ")"
+  }
+  ^
+
+/tmp/tmpseok_fyk/source.cu(321): warning #12-D: parsing restarts here after previous syntax error
+  ) {
+  ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+1 error detected in the compilation of "/tmp/tmpseok_fyk/source.cu".

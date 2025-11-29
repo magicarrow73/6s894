@@ -1,0 +1,11 @@
+/tmp/tmp7zcwingg/source.cpp:623:42: error: use of undeclared identifier 'num_threads'; did you mean 'num_cores'?
+  623 |     for (uint32_t t = 0; t < num_cores * num_threads) {
+      |                                          ^~~~~~~~~~~
+      |                                          num_cores
+/tmp/tmp7zcwingg/source.cpp:20:20: note: 'num_cores' declared here
+   20 | constexpr uint32_t num_cores = 8;            // for multicore
+      |                    ^
+/tmp/tmp7zcwingg/source.cpp:623:53: error: expected ';' in 'for' statement specifier
+  623 |     for (uint32_t t = 0; t < num_cores * num_threads) {
+      |                                                     ^
+2 errors generated.

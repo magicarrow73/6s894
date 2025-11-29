@@ -1,0 +1,7 @@
+/tmp/tmpk3ild4_r/source.cpp:314:33: error: function definition is not allowed here
+  314 |     void thread_func(void *arg) {
+      |                                 ^
+/tmp/tmpk3ild4_r/source.cpp:398:46: error: use of undeclared identifier 'thread_func'
+  398 |         pthread_create(&threads[t], nullptr, thread_func, (void *)(&thread_data[t]));
+      |                                              ^
+2 errors generated.

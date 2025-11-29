@@ -1,0 +1,22 @@
+/tmp/tmpp6ojksti/source.cpp:347:67: error: use of undeclared identifier 'two_point_five'
+  347 |                 _mm512_mul_ps(_mm512_div_ps(j_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmpp6ojksti/source.cpp:348:17: error: use of undeclared identifier 'neg_two'
+  348 |                 neg_two);
+      |                 ^
+/tmp/tmpp6ojksti/source.cpp:350:67: error: use of undeclared identifier 'two_point_five'
+  350 |                 _mm512_mul_ps(_mm512_div_ps(i_vec, img_size_vec), two_point_five),
+      |                                                                   ^
+/tmp/tmpp6ojksti/source.cpp:351:17: error: use of undeclared identifier 'neg_one_point_two_five'
+  351 |                 neg_one_point_two_five);
+      |                 ^
+/tmp/tmpp6ojksti/source.cpp:407:9: error: no matching function for call to 'pthread_create'
+  407 |         pthread_create(&threads[t], nullptr, thread_func, (void *)(&thread_data[t]));
+      |         ^~~~~~~~~~~~~~
+/usr/include/pthread.h:202:12: note: candidate function not viable: no known conversion from 'void (void *)' to 'void *(*)(void *)' for 3rd argument
+  202 | extern int pthread_create (pthread_t *__restrict __newthread,
+      |            ^
+  203 |                            const pthread_attr_t *__restrict __attr,
+  204 |                            void *(*__start_routine) (void *),
+      |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5 errors generated.
