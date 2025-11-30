@@ -1,0 +1,12 @@
+/tmp/tmp9_p0amlw/source.cu(24): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmp9_p0amlw/source.cu(59): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+ptxas /tmp/tmpxft_0001ee82_00000000-6_source.ptx, line 74; error   : Unknown modifier '.L1::cache'
+ptxas fatal   : Ptx assembly aborted due to errors

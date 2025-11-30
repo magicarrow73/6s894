@@ -1,0 +1,17 @@
+/tmp/tmpy6d__5zz/source.cu(128): error: identifier "x_val" is undefined
+      x_val = blockIdx.x * blockDim.x + threadIdx.x;
+      ^
+
+/tmp/tmpy6d__5zz/source.cu(129): error: identifier "y_val" is undefined
+      y_val = blockIdx.y * blockDim.y + threadIdx.y;
+      ^
+
+/tmp/tmpy6d__5zz/source.cu(130): error: identifier "x_increment" is undefined
+      x_increment = blockDim.x * gridDim.x;
+      ^
+
+/tmp/tmpy6d__5zz/source.cu(131): error: identifier "y_increment" is undefined
+      y_increment = blockDim.y * gridDim.y;
+      ^
+
+4 errors detected in the compilation of "/tmp/tmpy6d__5zz/source.cu".

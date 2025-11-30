@@ -1,0 +1,3 @@
+global_mem_latency latency = 	1 cycles
+l2_mem_latency latency = 	85 cycles
+l1_mem_latency latency = 	7 cycles

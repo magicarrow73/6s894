@@ -31,7 +31,7 @@ __attribute__((optimize("O0"))) __global__ void l1_mem_latency(
         // Measure memory load latency
         "mov.u64 %1, %%clock64;\n\t"
 
-        // <!-- TODO: your code here -->
+        "ld.global.ca.f32 %2, [%5];\n\t"
 
         "mov.u64 %4, %%clock64;\n\t"
 
@@ -66,7 +66,7 @@ __attribute__((optimize("O0"))) __global__ void l2_mem_latency(
         // Measure memory load latency
         "mov.u64 %1, %%clock64;\n\t"
 
-        // <!-- TODO: your code here -->
+        "ld.global.ca.f32 %2, [%5];\n\t"
 
         "mov.u64 %4, %%clock64;\n\t"
 
@@ -96,10 +96,12 @@ __attribute__((optimize("O0"))) __global__ void global_mem_latency(
         "membar.gl;\n\t"
         "mov.u64 %0, %%clock64;\n\t"
 
-        // <!-- TODO: your code here -->
+        "ld.global.cv.f32 %1, [%3];\n\t"
 
         "mov.u64 %4, %%clock64;\n\t"
+
         "st.global.f32 [%3], %1;\n\t"
+
         : "=l"(start_time), "=f"(result), "+f"(value1), "+l"(array_2), "=l"(end_time)
         :
         : "memory");

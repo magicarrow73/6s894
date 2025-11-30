@@ -119,7 +119,40 @@ __global__ void wave_gpu_naive_step(
     float *u0,      /* pointer to GPU memory */
     float const *u1 /* pointer to GPU memory */
 ) {
-    /* TODO: your GPU code here... */
+    constexpr int32_t n_cells_x = Scene::n_cells_x;
+    constexpr int32_t n_cells_y = Scene::n_cells_y;
+    constexpr float c = Scene::c;
+    constexpr float dx = Scene::dx;
+    constexpr float dt = Scene::dt;
+
+    uint32_t x_val = blockIdx.x * blockDim.x + threadIdx.x;
+    uint32_t y_val = blockIdx.y * blockDim.y + threadIdx.y;
+    uint32_t x_increment = blockDim.x * gridDim.x;
+    uint32_t y_increment = blockDim.y * gridDim.y;
+    for (int32_t idx_y = y_val; idx_y < n_cells_y; idx_y += y_increment) {
+        for (int32_t idx_x = x_val; idx_x < n_cells_x; idx_x += x_increment) {
+            int32_t idx = idx_y * n_cells_x + idx_x;
+            bool is_border =
+                (idx_x == 0 || idx_x == n_cells_x - 1 || idx_y == 0 ||
+                 idx_y == n_cells_y - 1);
+            float u_next_val;
+            if (is_border || Scene::is_wall(idx_x, idx_y)) {
+                u_next_val = 0.0f;
+            } else if (Scene::is_source(idx_x, idx_y)) {
+                u_next_val = Scene::source_value(idx_x, idx_y, t);
+            } else {
+                constexpr float coeff = c * c * dt * dt / (dx * dx);
+                float damping = Scene::damping(idx_x, idx_y);
+                u_next_val =
+                    ((2.0f - damping - 4.0f * coeff) * u1[idx] -
+                     (1.0f - damping) * u0[idx] +
+                     coeff *
+                         (u1[idx - 1] + u1[idx + 1] + u1[idx - n_cells_x] +
+                          u1[idx + n_cells_x]));
+            }
+            u0[idx] = u_next_val;
+        }
+    }
 }
 
 // 'wave_gpu_naive':
@@ -146,7 +179,15 @@ std::pair<float *, float *> wave_gpu_naive(
     float *u0, /* pointer to GPU memory */
     float *u1  /* pointer to GPU memory */
 ) {
-    /* TODO: your CPU code here... */
+    dim3 num_blocks = dim3(12, 4);
+    dim3 block_size = dim3(32, 32);
+    // accomplish the same functionality as 'wave_cpu' but on the GPU
+    // just need to iteratively launch the kernel 'wave_gpu_naive_step'
+    for (int32_t idx_step = 0; idx_step < n_steps; idx_step++) {
+        float t = t0 + idx_step * Scene::dt;
+        wave_gpu_naive_step<Scene><<<num_blocks, block_size>>>(t, u0, u1);
+        std::swap(u0, u1);
+    }
     return {u0, u1};
 }
 

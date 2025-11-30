@@ -1,0 +1,143 @@
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin ptx code:
+================
+arch = sm_89
+code version = [8,7]
+host = linux
+compile_size = 64bit
+compressed
+ptxasOptions = 
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry _Z14l1_mem_latencyPmS_PfS0_(
+.param .u64 _Z14l1_mem_latencyPmS_PfS0__param_0,
+.param .u64 _Z14l1_mem_latencyPmS_PfS0__param_1,
+.param .u64 _Z14l1_mem_latencyPmS_PfS0__param_2,
+.param .u64 _Z14l1_mem_latencyPmS_PfS0__param_3
+)
+{
+.reg .f32 %f<4>;
+.reg .b64 %rd<11>;
+
+
+ld.param.u64 %rd5, [_Z14l1_mem_latencyPmS_PfS0__param_0];
+ld.param.u64 %rd6, [_Z14l1_mem_latencyPmS_PfS0__param_1];
+ld.param.u64 %rd7, [_Z14l1_mem_latencyPmS_PfS0__param_2];
+ld.param.u64 %rd4, [_Z14l1_mem_latencyPmS_PfS0__param_3];
+cvta.to.global.u64 %rd8, %rd7;
+cvta.to.global.u64 %rd9, %rd6;
+cvta.to.global.u64 %rd10, %rd5;
+mov.f32 %f2, 0f00000000;
+//
+ld.global.ca.u64 %rd1, [%rd4];
+add.u64 %rd1, %rd1, %rd4;
+mov.u64 %rd2, %clock64;
+ld.global.ca.f32 %f1, [%rd4];
+mov.u64 %rd3, %clock64;
+st.global.f32 [%rd4], %f1;
+
+//
+st.global.u64 [%rd10], %rd2;
+st.global.u64 [%rd9], %rd3;
+st.global.f32 [%rd8], %f1;
+ret;
+
+}
+//
+.visible .entry _Z14l2_mem_latencyPmS_PfS0_(
+.param .u64 _Z14l2_mem_latencyPmS_PfS0__param_0,
+.param .u64 _Z14l2_mem_latencyPmS_PfS0__param_1,
+.param .u64 _Z14l2_mem_latencyPmS_PfS0__param_2,
+.param .u64 _Z14l2_mem_latencyPmS_PfS0__param_3
+)
+{
+.reg .f32 %f<4>;
+.reg .b64 %rd<11>;
+
+
+ld.param.u64 %rd5, [_Z14l2_mem_latencyPmS_PfS0__param_0];
+ld.param.u64 %rd6, [_Z14l2_mem_latencyPmS_PfS0__param_1];
+ld.param.u64 %rd7, [_Z14l2_mem_latencyPmS_PfS0__param_2];
+ld.param.u64 %rd4, [_Z14l2_mem_latencyPmS_PfS0__param_3];
+cvta.to.global.u64 %rd8, %rd7;
+cvta.to.global.u64 %rd9, %rd6;
+cvta.to.global.u64 %rd10, %rd5;
+mov.f32 %f2, 0f00000000;
+//
+ld.global.cg.u64 %rd1, [%rd4];
+add.u64 %rd1, %rd1, %rd4;
+membar.gl;
+mov.u64 %rd2, %clock64;
+ld.global.cg.f32 %f1, [%rd4];
+mov.u64 %rd3, %clock64;
+st.global.f32 [%rd4], %f1;
+
+//
+st.global.u64 [%rd10], %rd2;
+st.global.u64 [%rd9], %rd3;
+st.global.f32 [%rd8], %f1;
+ret;
+
+}
+//
+.visible .entry _Z18global_mem_latencyPmS_PVfS1_(
+.param .u64 _Z18global_mem_latencyPmS_PVfS1__param_0,
+.param .u64 _Z18global_mem_latencyPmS_PVfS1__param_1,
+.param .u64 _Z18global_mem_latencyPmS_PVfS1__param_2,
+.param .u64 _Z18global_mem_latencyPmS_PVfS1__param_3
+)
+{
+.reg .f32 %f<4>;
+.reg .b64 %rd<11>;
+
+
+ld.param.u64 %rd5, [_Z18global_mem_latencyPmS_PVfS1__param_0];
+ld.param.u64 %rd6, [_Z18global_mem_latencyPmS_PVfS1__param_1];
+ld.param.u64 %rd7, [_Z18global_mem_latencyPmS_PVfS1__param_2];
+ld.param.u64 %rd2, [_Z18global_mem_latencyPmS_PVfS1__param_3];
+cvta.to.global.u64 %rd8, %rd7;
+cvta.to.global.u64 %rd9, %rd6;
+cvta.to.global.u64 %rd10, %rd5;
+mov.f32 %f2, 0f00000000;
+//
+membar.gl;
+mov.u64 %rd1, %clock64;
+ld.global.cv.f32 %f1, [%rd2];
+mov.u64 %rd3, %clock64;
+st.global.f32 [%rd2], %f1;
+
+//
+st.global.u64 [%rd10], %rd1;
+st.global.u64 [%rd9], %rd3;
+st.volatile.global.f32 [%rd8], %f1;
+ret;
+
+}
+
+

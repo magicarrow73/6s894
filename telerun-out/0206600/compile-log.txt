@@ -1,0 +1,12 @@
+/tmp/tmpemigj111/source.cu(24): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmpemigj111/source.cu(58): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+/tmp/tmpemigj111/source.cu(93): error: Internal Compiler Error (codegen): "asm operand index requested is larger than the number of asm operands provided!"
+

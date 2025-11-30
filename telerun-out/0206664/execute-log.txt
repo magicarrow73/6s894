@@ -1,0 +1,3 @@
+global_mem_latency latency = 	1 cycles
+l2_mem_latency latency = 	5 cycles
+CUDA error 700 (an illegal memory access was encountered) at /tmp/tmpf0bufkkm/source.cu:181

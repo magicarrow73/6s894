@@ -1,0 +1,12 @@
+/tmp/tmpx0jkoixd/source.cu(24): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmpx0jkoixd/source.cu(59): warning #550-D: variable "temp_addr" was set but never used
+      unsigned long temp_addr;
+                    ^
+
+
+asm succesfully generated.
