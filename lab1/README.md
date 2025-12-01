@@ -1,6 +1,7 @@
-Starter code for 6.S894 [Lab 1](https://accelerated-computing-class.github.io/fall24/labs/lab1).
+Code for 6.S894 [Lab 1](https://accelerated-computing-class.github.io/fall24/labs/lab1).
 
-Comments [some of these are from the lab questions, some are independent].
+
+kcong comments [some of these are from the lab questions, some are independent].
 
 (1) scalar GPU is notably slower (391.456ms) than scalar CPU (40.932ms). This is due to the superior optimizations on CPU for single-thread execution, leading to lower runtime (faster ALUs, etc.) as well as lower overhead (e.g. not necessary to call kernels). parallelized GPU is closer to vectorized CPU, but still 3x off. Note that we are only using one warp, which is a small fraction of the total compute/parallelization avabile on the GPU! 
 
