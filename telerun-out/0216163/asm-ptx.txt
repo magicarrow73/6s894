@@ -1,0 +1,70 @@
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin elf code:
+================
+arch = sm_89
+code version = [1,7]
+host = linux
+compile_size = 64bit
+
+Fatbin ptx code:
+================
+arch = sm_89
+code version = [8,7]
+host = linux
+compile_size = 64bit
+compressed
+ptxasOptions = 
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf(
+.param .u32 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_0,
+.param .u32 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_1,
+.param .u32 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_2,
+.param .u64 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_3,
+.param .u64 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_4,
+.param .u64 _ZN9matmul_l19matmul_l1EiiiPKfS1_Pf_param_5
+)
+{
+
+
+
+ret;
+
+}
+//
+.visible .entry _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf(
+.param .u32 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_0,
+.param .u32 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_1,
+.param .u32 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_2,
+.param .u64 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_3,
+.param .u64 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_4,
+.param .u64 _ZN13matmul_l1_reg13matmul_l1_regEiiiPKfS1_Pf_param_5
+)
+{
+
+
+
+ret;
+
+}
+
+
