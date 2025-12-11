@@ -1,0 +1,5 @@
+/tmp/tmpa_njwcrh/source.cu(493): error: identifier "wave_gpu_shmem_multistep" is undefined
+      do { cuda_check((cudaFuncSetAttribute( wave_gpu_shmem_multistep<Scene>, cudaFuncAttributeMaxDynamicSharedMemorySize, static_cast<int>(shmem_size_bytes))), "/tmp/tmpa_njwcrh/source.cu", 493); } while (0)
+                                             ^
+
+1 error detected in the compilation of "/tmp/tmpa_njwcrh/source.cu".

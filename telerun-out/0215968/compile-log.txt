@@ -1,0 +1,23 @@
+/tmp/tmpywcdlkfg/source.cu(376): error: identifier "where" is undefined
+      where T
+      ^
+
+/tmp/tmpywcdlkfg/source.cu(376): error: "T" has already been declared in the current scope
+      where T
+            ^
+
+/tmp/tmpywcdlkfg/source.cu(378): error: expected a ";"
+          the
+          ^
+
+/tmp/tmpywcdlkfg/source.cu(381): warning #12-D: parsing restarts here after previous syntax error
+          extern __attribute__((shared)) float shmem[];
+                                                      ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmpywcdlkfg/source.cu(384): error: identifier "shmem" is undefined
+      float *sh_u0 = shmem;
+                     ^
+
+4 errors detected in the compilation of "/tmp/tmpywcdlkfg/source.cu".

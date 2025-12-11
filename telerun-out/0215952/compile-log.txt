@@ -1,0 +1,115 @@
+/tmp/tmptw5w3z1p/source.cu(351): error: closing brace of template definition not found
+  __attribute__((global)) void wave_gpu_shmem_multistep(
+                               ^
+
+/tmp/tmptw5w3z1p/source.cu(378): error: identifier "the" is undefined
+      the
+      ^
+
+/tmp/tmptw5w3z1p/source.cu(381): error: expected a ";"
+          extern __attribute__((shared)) float shmem[];
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(384): error: identifier "shmem" is undefined
+      float *sh_u0 = shmem;
+                     ^
+
+/tmp/tmptw5w3z1p/source.cu(472): warning #497-D: declaration of "Scene" hides template parameter
+      template <typename Scene>
+                         ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmptw5w3z1p/source.cu(472): error: a template declaration is not allowed here
+      template <typename Scene>
+      ^
+
+/tmp/tmptw5w3z1p/source.cu(627): error: static data member declaration is not allowed in this class
+          constexpr static int32_t n_cells_x = 3201;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(628): error: static data member declaration is not allowed in this class
+          constexpr static int32_t n_cells_y = 3201;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(629): error: static data member declaration is not allowed in this class
+          constexpr static float c = 1.0f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(630): error: static data member declaration is not allowed in this class
+          constexpr static float dx = 1.0f / float(n_cells_x - 1);
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(631): error: static data member declaration is not allowed in this class
+          constexpr static float dy = 1.0f / float(n_cells_y - 1);
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(632): error: static data member declaration is not allowed in this class
+          constexpr static float dt = 0.25f * dx / c;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(633): error: static data member declaration is not allowed in this class
+          constexpr static float t_end = 1.0f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(637): error: static data member declaration is not allowed in this class
+          constexpr static int32_t n_cells_x = 201;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(638): error: static data member declaration is not allowed in this class
+          constexpr static int32_t n_cells_y = 201;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(639): error: static data member declaration is not allowed in this class
+          constexpr static float c = 1.0f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(640): error: static data member declaration is not allowed in this class
+          constexpr static float dx = 1.0f / float(n_cells_x - 1);
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(641): error: static data member declaration is not allowed in this class
+          constexpr static float dy = 1.0f / float(n_cells_y - 1);
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(642): error: static data member declaration is not allowed in this class
+          constexpr static float dt = 0.25f * dx / c;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(643): error: static data member declaration is not allowed in this class
+          constexpr static float t_end = 1.0f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(646): warning #326-D: "inline" is not allowed
+      float __attribute__((host)) __attribute__((device)) __inline__ __attribute__((always_inline)) boundary_damping(
+                                                          ^
+
+/tmp/tmptw5w3z1p/source.cu(652): error: expected a ";"
+          int32_t idx_y) {
+                         ^
+
+/tmp/tmptw5w3z1p/source.cu(681): warning #12-D: parsing restarts here after previous syntax error
+      };
+       ^
+
+/tmp/tmptw5w3z1p/source.cu(684): error: static data member declaration is not allowed in this class
+          constexpr static float slit_width = 0.05f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(710): error: static data member declaration is not allowed in this class
+          constexpr static float slit_width = 0.03f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(737): error: static data member declaration is not allowed in this class
+          constexpr static float slit_width = 0.03f;
+          ^
+
+/tmp/tmptw5w3z1p/source.cu(792): error: expected a ";"
+          const std::vector<uint8_t> &pixels) {
+                                              ^
+
+/tmp/tmptw5w3z1p/source.cu(813): warning #12-D: parsing restarts here after previous syntax error
+                      padding.size());
+                                     ^
+
+24 errors detected in the compilation of "/tmp/tmptw5w3z1p/source.cu".

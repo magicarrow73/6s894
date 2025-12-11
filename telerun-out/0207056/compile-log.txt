@@ -1,0 +1,5 @@
+/tmp/tmps1_gwczo/source.cu(203): error: expected a type specifier
+                                 ) {
+                                 ^
+
+1 error detected in the compilation of "/tmp/tmps1_gwczo/source.cu".

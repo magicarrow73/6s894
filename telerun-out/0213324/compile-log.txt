@@ -1,0 +1,9 @@
+/tmp/tmp2a3kqs2b/source.cu(230): warning #177-D: variable "tile_h" was declared but never referenced
+      const int tile_h = By + 2;
+                ^
+          detected during instantiation of "std::pair<float *, float *> wave_gpu_shmem<Scene>(float, int32_t, float *, float *, float *, float *) [with Scene=DoubleSlitSmallScale]" at line 1157
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+asm succesfully generated.

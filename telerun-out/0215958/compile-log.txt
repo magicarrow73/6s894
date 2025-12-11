@@ -1,0 +1,13 @@
+/tmp/tmpg1rdinaq/source.cu(378): error: identifier "the" is undefined
+      the
+      ^
+
+/tmp/tmpg1rdinaq/source.cu(381): error: expected a ";"
+          extern __attribute__((shared)) float shmem[];
+          ^
+
+/tmp/tmpg1rdinaq/source.cu(384): error: identifier "shmem" is undefined
+      float *sh_u0 = shmem;
+                     ^
+
+3 errors detected in the compilation of "/tmp/tmpg1rdinaq/source.cu".

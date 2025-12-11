@@ -1,0 +1,9 @@
+/tmp/tmpos6_sdeq/source.cu(914): error: identifier "wave_gpu_shmem" is undefined
+              run_gpu_extra<Scene>(0.0f, n_steps, 1, 1, wave_gpu_shmem<Scene>);
+                                                        ^
+
+/tmp/tmpos6_sdeq/source.cu(997): error: identifier "wave_gpu_shmem" is undefined
+                  wave_gpu_shmem<Scene>);
+                  ^
+
+2 errors detected in the compilation of "/tmp/tmpos6_sdeq/source.cu".

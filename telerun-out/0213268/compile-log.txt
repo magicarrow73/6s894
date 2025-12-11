@@ -1,0 +1,5 @@
+/tmp/tmpi_xbfw9g/source.cu(351): error: identifier "indiv_grid_size" is undefined
+          (Scene::n_cells_x + indiv_grid_size - 1) / indiv_grid_size,
+                              ^
+
+1 error detected in the compilation of "/tmp/tmpi_xbfw9g/source.cu".

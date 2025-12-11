@@ -1,0 +1,32 @@
+/tmp/tmpjzrve2fh/source.cu(659): error: too few arguments in function call
+              float *extra1) { return func(t0, n_steps, u0, u1); });
+                                                              ^
+          detected during instantiation of "Results run_gpu_no_extra<Scene,F>(float, int32_t, int32_t, int32_t, F) [with Scene=DoubleSlitSmallScale, F=std::pair<float *, float *> (*)(float, signed int, float *, float *, float)]" at line 826
+
+/tmp/tmpjzrve2fh/source.cu(269): warning #940-D: missing return statement at end of non-void function "wave_gpu_shmem<Scene>(float, int32_t, float *, float *, float *, float *) [with Scene=DoubleSlitSmallScale]"
+  }
+  ^
+          detected during instantiation of "std::pair<float *, float *> wave_gpu_shmem<Scene>(float, int32_t, float *, float *, float *, float *) [with Scene=DoubleSlitSmallScale]" at line 844
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/tmp/tmpjzrve2fh/source.cu(659): error: too few arguments in function call
+              float *extra1) { return func(t0, n_steps, u0, u1); });
+                                                              ^
+          detected during instantiation of "Results run_gpu_no_extra<Scene,F>(float, int32_t, int32_t, int32_t, F) [with Scene=DoubleSlit, F=std::pair<float *, float *> (*)(float, signed int, float *, float *, float)]" at line 899
+
+/tmp/tmpjzrve2fh/source.cu(269): warning #940-D: missing return statement at end of non-void function "wave_gpu_shmem<Scene>(float, int32_t, float *, float *, float *, float *) [with Scene=DoubleSlit]"
+  }
+  ^
+          detected during instantiation of "std::pair<float *, float *> wave_gpu_shmem<Scene>(float, int32_t, float *, float *, float *, float *) [with Scene=DoubleSlit]" at line 927
+
+/tmp/tmpjzrve2fh/source.cu(707): error: no instance of function template "wave_gpu_naive" matches the argument list
+            argument types are: (float, const int32_t, float *, float *)
+          auto r = wave_gpu_naive<Scene>(t0 + idx_step * Scene::dt, frame_step, u0, u1);
+                   ^
+/tmp/tmpjzrve2fh/source.cu(176): note #3322-D: number of parameters of function template "wave_gpu_naive" does not match the call
+  std::pair<float *, float *> wave_gpu_naive(
+                              ^
+          detected during instantiation of "void wave_ffmpeg_gpu<Scene>(float, int32_t, FFmpegFrames &) [with Scene=DoubleSlitSmallScale]" at line 982
+
+3 errors detected in the compilation of "/tmp/tmpjzrve2fh/source.cu".

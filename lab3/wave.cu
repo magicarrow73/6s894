@@ -22,6 +22,7 @@ void cuda_check(cudaError_t code, const char *file, int line) {
         cuda_check((x), __FILE__, __LINE__); \
     } while (0)
 
+const int NUM_STEPS_PER_KERNEL = 4;
 ////////////////////////////////////////////////////////////////////////////////
 // CPU Reference Implementation (Already Written)
 
@@ -177,8 +178,8 @@ std::pair<float *, float *> wave_gpu_naive(
     float t0,
     int32_t n_steps,
     float *u0, /* pointer to GPU memory */
-    float *u1  /* pointer to GPU memory */
-) {
+    float *u1
+    /* pointer to GPU memory */) {
     dim3 num_blocks = dim3(12, 4);
     dim3 block_size = dim3(32, 32);
     // accomplish the same functionality as 'wave_cpu' but on the GPU
@@ -191,15 +192,213 @@ std::pair<float *, float *> wave_gpu_naive(
     return {u0, u1};
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// GPU Implementation (With Shared Memory)
+//////////////////////////////////////////////////////////////////////////////
+// GPU Implementation(With Shared Memory)
+
+// 'wave_gpu_shmem_multistep':
+// writes to extra0 and extra1 instead of u0 and u1
 
 template <typename Scene>
 __global__ void wave_gpu_shmem_multistep(
-    /* TODO: your arguments here... */
-) {
-    /* TODO: your GPU code here... */
+    float t,             // current time
+    uint32_t n_substeps, /* number of steps simulated in one kernel launch*/
+    float *u0,           /* pointer to GPU memory */
+    float const *u1 /* pointer to GPU memory */,
+    float *extra0,
+    float *extra1) {
+
+    // load data + useful constants
+    constexpr int32_t n_cells_x = Scene::n_cells_x;
+    constexpr int32_t n_cells_y = Scene::n_cells_y;
+    constexpr float c = Scene::c;
+    constexpr float dx = Scene::dx;
+    constexpr float dt = Scene::dt;
+
+    const int tx = threadIdx.x;
+    const int ty = threadIdx.y;
+    const int bx = blockIdx.x;
+    const int by = blockIdx.y;
+    const int T = n_substeps;
+    // load data into shared memory
+    // note that shared memory is usable within a complete block only
+    // this block will contain (blockDim.x) * (blockDim.y) elements,
+    // and we will try to compute as many steps as possible within this block
+    // the increase will however be (blockDim.x - 2T) * (blockDim.y - 2T) elements where T
+    // is the number of time steps because we need to account for the fact that only the
+    // interior elements can be computed without needing data from other blocks
+
+    extern __shared__ float shmem[]; // shared memory, can only use small size
+    // load data from global memory to shared memory
+
+    float *sh_u0 = shmem;                           // size: blockDim.x * blockDim.y
+    float *sh_u1 = shmem + blockDim.x * blockDim.y; // size: blockDim.x * blockDim.y
+
+    // create global indices, which should involve a shift of T to account for border
+    const int global_x = bx * (blockDim.x - 2 * T) + tx - T;
+    const int global_y = by * (blockDim.y - 2 * T) + ty - T;
+    const int global_idx = global_y * n_cells_x + global_x;
+
+    // local indices
+    const int local_idx = ty * blockDim.x + tx;
+
+    // load data
+    if (global_x >= 0 && global_x < n_cells_x && global_y >= 0 && global_y < n_cells_y) {
+
+        sh_u0[local_idx] = u0[global_idx];
+        sh_u1[local_idx] = u1[global_idx];
+
+    } else {
+        sh_u0[local_idx] = 0.0f;
+        sh_u1[local_idx] = 0.0f;
+    }
+
+    // sync threads to ensure all data is loaded
+    __syncthreads();
+
+    // perform T time steps within shared memory
+    for (int32_t i = 0; i < T; ++i) {
+        // only compute for the interior elements that do not require data from other
+        // blocks this requires computing elements which have in step i, are more than
+
+        // elements away from the border of the block (i.e. in 1st step, cannot
+        // compute boundary, etc.)
+
+        // index of block within shared region
+
+        bool is_interior =
+            (tx >= i + 1 && tx < blockDim.x - i - 1 && ty >= i + 1 &&
+             ty < blockDim.y - i - 1);
+
+        bool in_domain =
+            (global_x >= 0 && global_x < n_cells_x && global_y >= 0 &&
+             global_y < n_cells_y);
+        // calculation from before
+        bool is_border =
+            (global_x == 0 || global_x == n_cells_x - 1 || global_y == 0 ||
+             global_y == n_cells_y - 1);
+        float u_next_val = 0.0f; // default value if not interior
+
+        if (is_interior && in_domain) {
+            if (is_border || Scene::is_wall(global_x, global_y)) {
+                u_next_val = 0.0f;
+            } else if (Scene::is_source(global_x, global_y)) {
+                u_next_val = Scene::source_value(global_x, global_y, t + i * dt);
+            } else {
+                constexpr float coeff = c * c * dt * dt / (dx * dx);
+                float damping = Scene::damping(global_x, global_y);
+                u_next_val =
+                    ((2.0f - damping - 4.0f * coeff) * sh_u1[local_idx] -
+                     (1.0f - damping) * sh_u0[local_idx] +
+                     coeff *
+                         (sh_u1[local_idx - 1] + sh_u1[local_idx + 1] +
+                          sh_u1[local_idx - blockDim.x] + sh_u1[local_idx + blockDim.x]));
+            }
+        }
+        __syncthreads();
+        // update shared memory values
+        if (is_interior && in_domain) {
+            sh_u0[local_idx] = sh_u1[local_idx];
+            sh_u1[local_idx] = u_next_val;
+        }
+        __syncthreads();
+    }
+
+    // write back to global memory only the interior elements that were computed
+    // write back sh_u1 as it contains the latest values
+
+    bool in_write_region =
+        (tx >= T && tx < blockDim.x - T && ty >= T && ty < blockDim.y - T);
+    if (in_write_region) {
+        if (global_x >= 0 && global_x < n_cells_x && global_y >= 0 &&
+            global_y < n_cells_y) {
+
+            extra0[global_idx] = sh_u0[local_idx];
+            extra1[global_idx] = sh_u1[local_idx];
+        }
+    }
+    __syncthreads();
 }
+
+// template <typename Scene>
+// std::pair<float *, float *> wave_gpu_shmem(
+//     float t0,
+//     int32_t n_steps,
+//     float *u0,     /* pointer to GPU memory: u(t0 - dt) */
+//     float *u1,     /* pointer to GPU memory: u(t0)      */
+//     float *extra0, /* pointer to GPU memory (scratch)   */
+//     float *extra1  /* pointer to GPU memory (scratch)   */
+// ) {
+//     // Block of 32x32 threads (same as you used before).
+//     dim3 block_size(32, 32);
+
+//     // Max number of time steps per kernel launch.
+//     // We will do up to T=4 time steps in shared memory per kernel.
+//     constexpr int NUM_STEPS_PER_KERNEL = 2;
+
+//     // Two tiles of size blockDim.x * blockDim.y stored in shared memory.
+//     size_t shmem_size_bytes = 2 * block_size.x * block_size.y * sizeof(float);
+
+//     CUDA_CHECK(cudaFuncSetAttribute(
+//         wave_gpu_shmem_multistep<Scene>,
+//         cudaFuncAttributeMaxDynamicSharedMemorySize,
+//         static_cast<int>(shmem_size_bytes)));
+
+//     float t = t0;
+//     int32_t steps_done = 0;
+
+//     while (steps_done < n_steps) {
+//         // Number of steps this launch will take.
+//         int32_t T = std::min(NUM_STEPS_PER_KERNEL, n_steps - steps_done);
+
+//         // Effective interior region size for this T.
+//         int inner_x = block_size.x - 2 * T;
+//         int inner_y = block_size.y - 2 * T;
+
+//         // Safety: we need a positive inner region.
+//         // (True for our choices: 32x32 and T <= 4.)
+//         if (inner_x <= 0 || inner_y <= 0) {
+//             // Fallback: just do one step at a time (should not happen
+//             // for the given lab parameters).
+//             T = 1;
+//             inner_x = block_size.x - 2 * T;
+//             inner_y = block_size.y - 2 * T;
+//         }
+
+//         // Grid size so that each interior block covers (inner_x x inner_y)
+//         // cells of the logical grid.
+//         dim3 grid_size(
+//             (Scene::n_cells_x + inner_x - 1) / inner_x,
+//             (Scene::n_cells_y + inner_y - 1) / inner_y);
+
+//         wave_gpu_shmem_multistep<Scene><<<grid_size, block_size, shmem_size_bytes>>>(
+//             t,
+//             static_cast<uint32_t>(T),
+//             u0,
+//             u1,
+//             extra0,
+//             extra1);
+
+//         // After the kernel:
+//         //   extra0 = u(t + (T - 1) * dt)
+//         //   extra1 = u(t +  T      * dt)
+//         //
+//         // For the NEXT kernel, we want:
+//         //   u0 = u(t + (T - 1) * dt)  => "previous"
+//         //   u1 = u(t +  T      * dt)  => "current"
+//         //
+//         // So just swap pointers:
+//         std::swap(u0, extra0);
+//         std::swap(u1, extra1);
+
+//         t += T * Scene::dt;
+//         steps_done += T;
+//     }
+
+//     // At the end:
+//     //   u0 points to u(t0 + (n_steps - 1) * dt)
+//     //   u1 points to u(t0 +  n_steps      * dt)
+//     return {u0, u1};
+// }
 
 // 'wave_gpu_shmem':
 //
@@ -224,7 +423,7 @@ __global__ void wave_gpu_shmem_multistep(
 //     the wave u(t0 + (n_steps - 1) * dt) and u(t0 + n_steps * dt) after all
 //     launched kernels have completed. These buffers can be any of 'u0', 'u1',
 //     'extra0', or 'extra1'.
-//
+
 template <typename Scene>
 std::pair<float *, float *> wave_gpu_shmem(
     float t0,
@@ -235,9 +434,41 @@ std::pair<float *, float *> wave_gpu_shmem(
     float *extra1  /* pointer to GPU memory */
 ) {
     /* TODO: your CPU code here... */
+
+    dim3 block_size = dim3(32, 32);
+
+    uint32_t shmem_size_bytes = 2 * block_size.x * block_size.y * sizeof(float);
+    CUDA_CHECK(cudaFuncSetAttribute(
+        wave_gpu_shmem_multistep<Scene>,
+        cudaFuncAttributeMaxDynamicSharedMemorySize,
+        shmem_size_bytes));
+
+    int idx_step = 0;
+    float t = t0;
+    while (idx_step < n_steps) {
+        int steps_this_launch = min(NUM_STEPS_PER_KERNEL, n_steps - idx_step);
+
+        int32_t indiv_grid_size_x = (block_size.x - 2 * steps_this_launch);
+        int32_t indiv_grid_size_y = (block_size.y - 2 * steps_this_launch);
+        dim3 num_blocks = dim3(
+            (Scene::n_cells_x + indiv_grid_size_x - 1) / indiv_grid_size_x,
+            (Scene::n_cells_y + indiv_grid_size_y - 1) / indiv_grid_size_y);
+
+        wave_gpu_shmem_multistep<Scene><<<num_blocks, block_size, shmem_size_bytes>>>(
+            t,
+            steps_this_launch,
+            u0,
+            u1,
+            extra0,
+            extra1);
+        std::swap(extra0, u0);
+        std::swap(extra1, u1);
+        t += steps_this_launch * Scene::dt;
+        idx_step += steps_this_launch;
+    }
+
     return {u0, u1};
 }
-
 /// <--- /your code here --->
 
 ////////////////////////////////////////////////////////////////////////////////

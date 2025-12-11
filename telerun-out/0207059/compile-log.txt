@@ -1,0 +1,5 @@
+/tmp/tmp491ma_68/source.cu(181): error: expected a type specifier
+                                 ) {
+                                 ^
+
+1 error detected in the compilation of "/tmp/tmp491ma_68/source.cu".

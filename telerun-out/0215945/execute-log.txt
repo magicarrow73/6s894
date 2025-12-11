@@ -1,0 +1,16 @@
+Small scale tests (on scene 'DoubleSlitSmallScale'):
+  CPU sequential implementation:
+    run time: 448.87 ms
+
+  GPU naive implementation:
+    run time: 2.51 ms
+    correctness: 8.50e-06 relative RMSE
+
+  GPU shared memory implementation:
+    run time: 1.93 ms
+    correctness: 7.66e-05 relative RMSE
+
+  CPU -> GPU naive speedup: 178.88x
+  CPU -> GPU shared memory speedup: 232.00x
+  GPU naive -> GPU shared memory speedup: 1.30x
+
